@@ -1,4 +1,4 @@
-/* Copyright (c) 2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -43,6 +43,43 @@ enum hal_vcap_color {
 	HAL_VCAP_YUV = 0,
 	HAL_VCAP_RGB,
 };
+
+enum nr_mode {
+	NR_DISABLE = 0,
+	NR_AUTO,
+	NR_MANUAL,
+};
+
+enum nr_decay_ratio {
+	NR_Decay_Ratio_26 = 0,
+	NR_Decay_Ratio_25,
+	NR_Decay_Ratio_24,
+	NR_Decay_Ratio_23,
+	NR_Decay_Ratio_22,
+	NR_Decay_Ratio_21,
+	NR_Decay_Ratio_20,
+	NR_Decay_Ratio_19,
+};
+
+struct nr_config {
+	uint8_t max_blend_ratio;
+	uint8_t scale_diff_ratio;
+	uint8_t diff_limit_ratio;
+	uint8_t scale_motion_ratio;
+	uint8_t blend_limit_ratio;
+};
+
+struct nr_param {
+	enum nr_mode mode;
+	enum nr_decay_ratio decay_ratio;
+	uint8_t window;
+	struct nr_config luma;
+	struct nr_config chroma;
+};
+
+#define VCAPIOC_NR_S_PARAMS _IOWR('V', (BASE_VIDIOC_PRIVATE+0), struct nr_param)
+
+#define VCAPIOC_NR_G_PARAMS _IOWR('V', (BASE_VIDIOC_PRIVATE+1), struct nr_param)
 
 struct v4l2_format_vc_ext {
 	enum hal_vcap_mode     mode;

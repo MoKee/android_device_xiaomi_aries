@@ -1,6 +1,6 @@
-cmd_usr/gen_init_cpio := gcc -Wp,-MD,usr/.gen_init_cpio.d -Iusr -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -o usr/gen_init_cpio /source/aries-cm/kernel/xiaomi/aries/usr/gen_init_cpio.c  
+cmd_usr/gen_init_cpio := gcc -Wp,-MD,usr/.gen_init_cpio.d -Iusr -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -o usr/gen_init_cpio /source/cm-10.1/kernel/xiaomi/aries/usr/gen_init_cpio.c  
 
-source_usr/gen_init_cpio := /source/aries-cm/kernel/xiaomi/aries/usr/gen_init_cpio.c
+source_usr/gen_init_cpio := /source/cm-10.1/kernel/xiaomi/aries/usr/gen_init_cpio.c
 
 deps_usr/gen_init_cpio := \
   /usr/include/stdio.h \
