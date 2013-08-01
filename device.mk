@@ -79,8 +79,6 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/aries/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh \
     device/xiaomi/aries/init.xiaomi.aries.wifi.sh:system/etc/init.xiaomi.aries.wifi.sh
 
-PRODUCT_COPY_FILES += \
-    device/xiaomi/aries/bootanimation.zip:system/media/bootanimation.zip
 
 # Prebuilt kl and kcm keymaps
 PRODUCT_COPY_FILES += \
@@ -196,6 +194,11 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     rild.libpath=/system/lib/libril-qc-qmi-1.so
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.telephony.default_network=7 \
+    ro.cdma.home.operator.numeric=46003 \
+    ro.cdma.factory=china
 
 PRODUCT_PROPERTY_OVERRIDES += \
     telephony.lteOnCdmaDevice=0

@@ -26,6 +26,9 @@ TARGET_BOOTLOADER_BOARD_NAME := aries
 TARGET_BOOTLOADER_NAME       := aries
 TARGET_BOARD_INFO_FILE       := device/xiaomi/aries/board-info.txt
 
+# Use MI-TWO
+BOARD_USE_XIAOMI_MITWO_HARDWARE := true
+
 # Flags
 TARGET_GLOBAL_CFLAGS += -mfpu=neon-vfpv4 -mfloat-abi=softfp  -DQCOM_HARDWARE
 TARGET_GLOBAL_CPPFLAGS += -mfpu=neon-vfpv4 -mfloat-abi=softfp -DQCOM_HARDWARE
