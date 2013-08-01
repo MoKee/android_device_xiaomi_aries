@@ -14,6 +14,4 @@
 # limitations under the License.
 #
 
-add_lunch_combo full_aries-userdebug
-add_lunch_combo full_aries-eng
-add_lunch_combo cm_aries-userdebug
+add_lunch_combo losp_aries-userdebug

@@ -74,7 +74,7 @@ BOARD_EGL_CFG := device/xiaomi/aries/configs/egl.cfg
 
 TARGET_QCOM_MEDIA_VARIANT   := caf
 TARGET_QCOM_DISPLAY_VARIANT := caf
-TARGET_QCOM_AUDIO_VARIANT   := caf
+TARGET_QCOM_AUDIO_VARIANT   := aries
 
 #Display
 TARGET_USES_ION             := true
@@ -133,6 +133,6 @@ BOARD_USES_SECURE_SERVICES := true
 
 BOARD_LIB_DUMPSTATE := libdumpstate.aries
 
--include vendor/xiaomi/aries/BoardConfigVendor.mk
+-include vendor/aries/aries/BoardConfigVendor.mk
 
 
