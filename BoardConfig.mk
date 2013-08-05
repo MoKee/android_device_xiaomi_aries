@@ -116,9 +116,7 @@ TARGET_FORCE_CPU_UPLOAD := true
 
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-BOARD_CUSTOM_GRAPHICS := ../../../device/xiaomi/aries/recovery/graphics_en.c
-BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/xiaomi/aries/recovery/recovery_keys.c
-BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_15x24.h\"
+TARGET_RECOVERY_INITRC := device/xiaomi/aries/recovery/init.rc
 BOARD_HAS_NO_SELECT_BUTTON := true
 
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -135,6 +133,15 @@ BOARD_WANTS_EMMC_BOOT := true
 BOARD_USES_SECURE_SERVICES := true
 
 BOARD_LIB_DUMPSTATE := libdumpstate.aries
+
+RECOVERY_HAS_DUALSYSTEM_PARTITIONS := true
+RECOVERY_NEEDS_VSYNC := true
+
+PRODUCT_COPY_FILES += \
+    device/xiaomi/aries/recovery.fstab:recovery/root/etc/recovery.fstab \
+    device/xiaomi/aries/recovery/device.conf:recovery/root/res/device.conf \
+    device/xiaomi/aries/recovery/sbin/stock:recovery/root/sbin/stock \
+    device/xiaomi/aries/recovery/sbin/recovery.sh:recovery/root/sbin/recovery.sh
 
 -include vendor/aries/aries/BoardConfigVendor.mk
 
