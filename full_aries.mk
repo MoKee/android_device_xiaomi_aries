@@ -36,5 +36,5 @@ PRODUCT_PACKAGES += voiceproc.img
 
 # Inherit from hardware-specific part of the product configuration
 $(call inherit-product, device/xiaomi/aries/device.mk)
-$(call inherit-product-if-exists, vendor/aries/aries/aries-vendor.mk)
-$(call inherit-product-if-exists, vendor/aries/qcom-common/qcom-common-vendor.mk)
+$(call inherit-product-if-exists, vendor/xiaomi/aries/aries-vendor.mk)
+$(call inherit-product-if-exists, vendor/xiaomi/qcom-common/qcom-common-vendor.mk)

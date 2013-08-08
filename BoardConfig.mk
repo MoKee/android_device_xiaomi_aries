@@ -143,6 +143,6 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/aries/recovery/sbin/stock:recovery/root/sbin/stock \
     device/xiaomi/aries/recovery/sbin/recovery.sh:recovery/root/sbin/recovery.sh
 
--include vendor/aries/aries/BoardConfigVendor.mk
+-include vendor/xiaomi/aries/BoardConfigVendor.mk
 
 
