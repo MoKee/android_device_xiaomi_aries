@@ -154,6 +154,7 @@ struct ion_flag_data {
 #define ION_IOC_ALLOC		_IOWR(ION_IOC_MAGIC, 0, \
 				      struct ion_allocation_data)
 
+
 #define ION_IOC_ALLOC_COMPAT		_IOWR(ION_IOC_MAGIC, 0, \
 				      struct ion_allocation_data_compat)
 
