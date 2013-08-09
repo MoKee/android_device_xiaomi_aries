@@ -111,6 +111,9 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml
 
+PRODUCT_COPY_FILES += \
+    device/xiaomi/aries/modules/wlan.ko:system/lib/modules/wlan.ko
+
 # GPS configuration
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/configs/gps.conf:system/etc/gps.conf
@@ -162,8 +165,7 @@ PRODUCT_PACKAGES += \
     gralloc.msm8960 \
     copybit.msm8960 \
     lights.msm8960 \
-    camera-wrapper.msm8960 \
-    power.msm8960
+    camera-wrapper.msm8960
 
 PRODUCT_PACKAGES += \
     alsa.msm8960 \

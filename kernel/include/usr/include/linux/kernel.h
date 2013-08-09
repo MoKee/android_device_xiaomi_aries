@@ -13,4 +13,6 @@
 /* To identify board information in panic logs, set this */
 extern char *mach_panic_string;
 
+int sysmat_writecmd(const char *cmdbuf, int cmdlen);
+
 #endif

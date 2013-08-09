@@ -5,7 +5,7 @@
  *                  & Ralph  Metzler <ralph@convergence.de>
  *                    for convergence integrated media GmbH
  *
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -31,11 +31,6 @@
 
 
 #define DMX_FILTER_SIZE 16
-
-/* Min recording chunk upon which event is generated */
-#define DMX_REC_BUFF_CHUNK_MIN_SIZE		(100*188)
-
-#define DMX_MAX_DECODER_BUFFER_NUM		(32)
 
 typedef enum
 {
@@ -136,6 +131,7 @@ struct dmx_indexing_video_params {
 	enum dmx_indexing_video_profile profile;
 };
 
+
 struct dmx_pes_filter_params
 {
 	__u16          pid;
@@ -143,18 +139,6 @@ struct dmx_pes_filter_params
 	dmx_output_t   output;
 	dmx_pes_type_t pes_type;
 	__u32          flags;
-
-	/*
-	 * The following configures when the event
-	 * DMX_EVENT_NEW_REC_CHUNK will be triggered.
-	 * When new recorded data is received with size
-	 * equal or larger than this value a new event
-	 * will be triggered. This is relevent when
-	 * output is DMX_OUT_TS_TAP or DMX_OUT_TSDEMUX_TAP,
-	 * size must be at least DMX_REC_BUFF_CHUNK_MIN_SIZE
-	 * and smaller than buffer size.
-	 */
-	__u32          rec_chunk_size;
 
 	struct dmx_indexing_video_params video_params;
 };
@@ -180,226 +164,6 @@ struct dmx_buffer_status {
 
 	/* non-zero if data error occured */
 	int error;
-};
-
-/* Events associated with each demux filter */
-enum dmx_event {
-	/* New PES packet is ready to be consumed */
-	DMX_EVENT_NEW_PES,
-
-	/* New section is ready to be consumed */
-	DMX_EVENT_NEW_SECTION,
-
-	/* New recording chunk is ready to be consumed */
-	DMX_EVENT_NEW_REC_CHUNK,
-
-	/* New PCR value is ready */
-	DMX_EVENT_NEW_PCR,
-
-	/* Overflow */
-	DMX_EVENT_BUFFER_OVERFLOW,
-
-	/* Section was dropped due to CRC error */
-	DMX_EVENT_SECTION_CRC_ERROR,
-
-	/* End-of-stream, no more data from this filter */
-	DMX_EVENT_EOS,
-
-	/* New Elementary Stream data is ready */
-	DMX_EVENT_NEW_ES_DATA
-};
-
-/* Flags passed in filter events */
-
-/* Continuity counter error was detected */
-#define DMX_FILTER_CC_ERROR			0x01
-
-/* Discontinuity indicator was set */
-#define DMX_FILTER_DISCONTINUITY_INDICATOR	0x02
-
-/* PES legnth in PES header is not correct */
-#define DMX_FILTER_PES_LENGTH_ERROR		0x04
-
-
-/* PES info associated with DMX_EVENT_NEW_PES event */
-struct dmx_pes_event_info {
-	/* Offset at which PES information starts */
-	__u32 base_offset;
-
-	/*
-	 * Start offset at which PES data
-	 * from the stream starts.
-	 * Equal to base_offset if PES data
-	 * starts from the beginning.
-	 */
-	__u32 start_offset;
-
-	/* Total length holding the PES information */
-	__u32 total_length;
-
-	/* Actual length holding the PES data */
-	__u32 actual_length;
-
-	/* Local receiver timestamp in 27MHz */
-	__u64 stc;
-
-	/* Flags passed in filter events */
-	__u32 flags;
-
-	/*
-	 * Number of TS packets with Transport Error Indicator (TEI)
-	 * found while constructing the PES.
-	 */
-	__u32 transport_error_indicator_counter;
-
-	/* Number of continuity errors found while constructing the PES */
-	__u32 continuity_error_counter;
-
-	/* Total number of TS packets holding the PES */
-	__u32 ts_packets_num;
-};
-
-/* Section info associated with DMX_EVENT_NEW_SECTION event */
-struct dmx_section_event_info {
-	/* Offset at which section information starts */
-	__u32 base_offset;
-
-	/*
-	 * Start offset at which section data
-	 * from the stream starts.
-	 * Equal to base_offset if section data
-	 * starts from the beginning.
-	 */
-	__u32 start_offset;
-
-	/* Total length holding the section information */
-	__u32 total_length;
-
-	/* Actual length holding the section data */
-	__u32 actual_length;
-
-	/* Flags passed in filter events */
-	__u32 flags;
-};
-
-/* Recording info associated with DMX_EVENT_NEW_REC_CHUNK event */
-struct dmx_rec_chunk_event_info {
-	/* Offset at which recording chunk starts */
-	__u32 offset;
-
-	/* Size of recording chunk in bytes */
-	__u32 size;
-};
-
-/* PCR info associated with DMX_EVENT_NEW_PCR event */
-struct dmx_pcr_event_info {
-	/* Local timestamp in 27MHz
-	 * when PCR packet was received
-	 */
-	__u64 stc;
-
-	/* PCR value in 27MHz */
-	__u64 pcr;
-
-	/* Flags passed in filter events */
-	__u32 flags;
-};
-
-/*
- * Elementary stream data information associated
- * with DMX_EVENT_NEW_ES_DATA event
- */
-struct dmx_es_data_event_info {
-	/* Buffer user-space handle */
-	int buf_handle;
-
-	/*
-	 * Cookie to provide when releasing the buffer
-	 * using the DMX_RELEASE_DECODER_BUFFER ioctl command
-	 */
-	int cookie;
-
-	/* Offset of data from the beginning of the buffer */
-	__u32 offset;
-
-	/* Length of data in buffer (in bytes) */
-	__u32 data_len;
-
-	/* Indication whether PTS value is valid */
-	int pts_valid;
-
-	/* PTS value associated with the buffer */
-	__u64 pts;
-
-	/* Indication whether DTS value is valid */
-	int dts_valid;
-
-	/* DTS value associated with the buffer */
-	__u64 dts;
-
-	/*
-	 * Number of TS packets with Transport Error Indicator (TEI) set
-	 * in the TS packet header since last reported event
-	 */
-	__u32 transport_error_indicator_counter;
-
-	/* Number of continuity errors since last reported event */
-	__u32 continuity_error_counter;
-
-	/* Total number of TS packets processed since last reported event */
-	__u32 ts_packets_num;
-
-	/*
-	 * Number of dropped bytes due to insufficient buffer space,
-	 * since last reported event
-	 */
-	__u32 ts_dropped_bytes;
-};
-
-/*
- * Filter's event returned through DMX_GET_EVENT.
- * poll with POLLPRI would block until events are available.
- */
-struct dmx_filter_event {
-	enum dmx_event type;
-
-	union {
-		struct dmx_pes_event_info pes;
-		struct dmx_section_event_info section;
-		struct dmx_rec_chunk_event_info recording_chunk;
-		struct dmx_pcr_event_info pcr;
-		struct dmx_es_data_event_info es_data;
-	} params;
-};
-
-/* Filter's buffer requirement returned in dmx_caps */
-struct dmx_buffer_requirement {
-	/* Buffer size alignment, 0 means no special requirement */
-	__u32 size_alignment;
-
-	/* Maximum buffer size allowed */
-	__u32 max_size;
-
-	/* Maximum number of linear buffers handled by demux */
-	__u32 max_buffer_num;
-
-	/* Feature support bitmap as detailed below */
-	__u32 flags;
-
-/* Buffer must be allocated as physically contiguous memory */
-#define DMX_BUFFER_CONTIGUOUS_MEM		0x1
-
-/* If the filter's data is decrypted, the buffer should be secured one */
-#define DMX_BUFFER_SECURED_IF_DECRYPTED		0x2
-
-/* Buffer can be allocated externally */
-#define DMX_BUFFER_EXTERNAL_SUPPORT		0x4
-
-/* Buffer can be allocated internally */
-#define DMX_BUFFER_INTERNAL_SUPPORT		0x8
-
-/* Filter output can be output to a linear buffer group */
-#define DMX_BUFFER_LINEAR_GROUP_SUPPORT		0x10
 };
 
 typedef struct dmx_caps {
@@ -458,26 +222,6 @@ typedef struct dmx_caps {
 
 	/* Max bitrate from single memory input. Mbit/sec */
 	int memory_input_max_bitrate;
-
-	struct dmx_buffer_requirement section;
-
-	/* For PES not sent to decoder */
-	struct dmx_buffer_requirement pes;
-
-	/* For PES sent to decoder */
-	struct dmx_buffer_requirement decoder;
-
-	/* Recording buffer for recording of 188 bytes packets */
-	struct dmx_buffer_requirement recording_188_tsp;
-
-	/* Recording buffer for recording of 192 bytes packets */
-	struct dmx_buffer_requirement recording_192_tsp;
-
-	/* DVR input buffer for playback of 188 bytes packets */
-	struct dmx_buffer_requirement playback_188_tsp;
-
-	/* DVR input buffer for playback of 192 bytes packets */
-	struct dmx_buffer_requirement playback_192_tsp;
 } dmx_caps_t;
 
 typedef enum {
@@ -520,68 +264,11 @@ enum dmx_playback_mode_t {
 };
 
 struct dmx_stc {
-	unsigned int num; /* input : which STC? 0..N */
-	unsigned int base; /* output: divisor for stc to get 90 kHz clock */
-	__u64 stc; /* output: stc in 'base'*90 kHz units */
+	unsigned int num;	/* input : which STC? 0..N */
+	unsigned int base;	/* output: divisor for stc to get 90 kHz clock */
+	__u64 stc;		/* output: stc in 'base'*90 kHz units */
 };
 
-enum dmx_buffer_mode {
-	/*
-	 * demux buffers are allocated internally
-	 * by the demux driver. This is the default mode.
-	 * DMX_SET_BUFFER_SIZE can be used to set the size of
-	 * this buffer.
-	 */
-	DMX_BUFFER_MODE_INTERNAL,
-
-	/*
-	 * demux buffers are allocated externally and provided
-	 * to demux through DMX_SET_BUFFER.
-	 * When this mode is used DMX_SET_BUFFER_SIZE and
-	 * mmap are prohibited.
-	 */
-	DMX_BUFFER_MODE_EXTERNAL,
-};
-
-struct dmx_buffer {
-	unsigned int size;
-	int handle;
-};
-
-
-struct dmx_decoder_buffers {
-	/*
-	 * Specify if linear buffer support is requested. If set, buffers_num
-	 * must be greater than 1
-	 */
-	int is_linear;
-
-	/*
-	 * Specify number of external buffers allocated by user.
-	 * If set to 0 means internal buffer allocation is requested
-	 */
-	__u32 buffers_num;
-
-	/* Specify buffer size, either external or internal */
-	__u32 buffers_size;
-
-	/* Array of externally allocated buffer handles */
-	int handles[DMX_MAX_DECODER_BUFFER_NUM];
-};
-
-struct dmx_secure_mode {
-	/*
-	 * Specifies whether secure mode should be set or not for the filter's
-	 * pid. Note that DMX_OUT_TSDEMUX_TAP filters can have more than 1 pid
-	 */
-	int is_secured;
-
-	/* PID to associate with key ladder id */
-	__u16 pid;
-
-	/* key ladder information to associate with the specified pid */
-	__u32 key_ladder_id;
-};
 
 #define DMX_START                _IO('o', 41)
 #define DMX_STOP                 _IO('o', 42)
@@ -601,12 +288,5 @@ struct dmx_secure_mode {
 #define DMX_RELEASE_DATA		 _IO('o', 57)
 #define DMX_FEED_DATA			 _IO('o', 58)
 #define DMX_SET_PLAYBACK_MODE	 _IOW('o', 59, enum dmx_playback_mode_t)
-#define DMX_GET_EVENT		 _IOR('o', 60, struct dmx_filter_event)
-#define DMX_SET_BUFFER_MODE	 _IOW('o', 61, enum dmx_buffer_mode)
-#define DMX_SET_BUFFER		 _IOW('o', 62, struct dmx_buffer)
-#define DMX_SET_DECODER_BUFFER	 _IOW('o', 63, struct dmx_decoder_buffers)
-#define DMX_REUSE_DECODER_BUFFER _IO('o', 64)
-#define DMX_SET_SECURE_MODE	_IOW('o', 65, struct dmx_secure_mode)
-
 
 #endif /*_DVBDMX_H_*/
