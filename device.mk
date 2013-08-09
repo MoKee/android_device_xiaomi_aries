@@ -47,7 +47,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
     device/xiaomi/aries/WCNSS_qcom_cfg.ini:system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini \
-    device/xiaomi/aries/WCNSS_qcom_wlan_nv.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin
+    device/xiaomi/aries/WCNSS_qcom_wlan_nv.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin \
+    device/xiaomi/aries/kernel/wlan.ko:system/lib/modules/wlan.ko
 
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/configs/snd_soc_msm_2x_Fusion3:system/etc/snd_soc_msm/snd_soc_msm_2x_Fusion3 \
@@ -69,7 +70,7 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/aries/configs/init.target.rc:root/init.target.rc \
     device/xiaomi/aries/configs/init.aries.syspart_system.rc:root/init.aries.syspart_system.rc \
     device/xiaomi/aries/configs/init.aries.syspart_system1.rc:root/init.aries.syspart_system1.rc \
-    device/xiaomi/aries/configs/init.qcom.usb.sh:root/init.qcom.usb.sh \
+    device/xiaomi/aries/configs/init.qcom.usb.sh:root/init.qcom.usb.sh
 
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
@@ -110,9 +111,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml
-
-PRODUCT_COPY_FILES += \
-    device/xiaomi/aries/modules/wlan.ko:system/lib/modules/wlan.ko
 
 # GPS configuration
 PRODUCT_COPY_FILES += \
@@ -158,15 +156,19 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     e2fsck
 
+# QCOM Display
 PRODUCT_PACKAGES += \
     libgenlock \
+    libmemalloc \
     liboverlay \
+    libqdutils \
+    libtilerenderer \
+    libI420colorconvert \
     hwcomposer.msm8960 \
     gralloc.msm8960 \
-    copybit.msm8960 \
-    lights.msm8960 \
-    camera-wrapper.msm8960
+    copybit.msm8960
 
+# Audio
 PRODUCT_PACKAGES += \
     alsa.msm8960 \
     audio_policy.msm8960 \
@@ -174,22 +176,38 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.usb.default \
     audio.r_submix.default \
-    libaudio-resampler
+    libaudio-resampler \
+    tinymix
 
+# BT
 PRODUCT_PACKAGES += \
     hci_qcomm_init
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.qualcomm.bt.hci_transport=smd
 
+# Omx
 PRODUCT_PACKAGES += \
-    libmm-omxcore \
-    libdivxdrmdecrypt \
+    libOmxAacEnc \
+    libOmxAmrEnc \
+    libOmxCore \
+    libOmxEvrcEnc \
+    libOmxQcelp13Enc \
     libOmxVdec \
     libOmxVenc \
-    libOmxCore \
-    libstagefrighthw \
-    libc2dcolorconvert
+    libc2dcolorconvert \
+    libdashplayer \
+    libdivxdrmdecrypt \
+    libmm-omxcore \
+    libstagefrighthw
+
+# Camera wrapper
+PRODUCT_PACKAGES += \
+    camera-wrapper.msm8960
+
+# Light
+PRODUCT_PACKAGES += \
+    lights.msm8960
 
 PRODUCT_PACKAGES += \
     libwfcu
@@ -201,6 +219,10 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.telephony.default_network=7 \
     ro.cdma.home.operator.numeric=46003 \
     ro.cdma.factory=china
+
+# QCOM
+PRODUCT_PROPERTY_OVERRIDES += \
+    com.qc.hardware=true
 
 PRODUCT_PROPERTY_OVERRIDES += \
     telephony.lteOnCdmaDevice=0
