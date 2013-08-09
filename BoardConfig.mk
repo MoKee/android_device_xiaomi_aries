@@ -121,9 +121,6 @@ TARGET_FORCE_CPU_UPLOAD := true
 
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT     := "RGBX_8888"
-BOARD_CUSTOM_GRAPHICS            := ../../../device/xiaomi/aries/recovery/graphics_en.c
-BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/xiaomi/aries/recovery/recovery_keys.c
-BOARD_USE_CUSTOM_RECOVERY_FONT   := \"roboto_15x24.h\"
 BOARD_HAS_NO_SELECT_BUTTON       := true
 
 TARGET_USERIMAGES_USE_EXT4         := true
@@ -148,6 +145,9 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/aries/recovery/device.conf:recovery/root/res/device.conf \
     device/xiaomi/aries/recovery/sbin/stock:recovery/root/sbin/stock \
     device/xiaomi/aries/recovery/sbin/recovery.sh:recovery/root/sbin/recovery.sh
+
+# MiTwo hardware flag
+BOARD_USE_XIAOMI_MITWO_HARDWARE := true
 
 -include vendor/xiaomi/aries/BoardConfigVendor.mk
 
