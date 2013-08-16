@@ -8,6 +8,7 @@ on init
     export EXTERNAL_STORAGE /sdcard
 
     symlink /system/etc /etc
+    symlink /etc/recovery.fstab /etc/fstab
 
     mkdir /storage_int
     mkdir /sdcard
