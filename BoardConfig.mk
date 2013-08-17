@@ -149,6 +149,7 @@ BOARD_LIB_DUMPSTATE := libdumpstate.aries
 
 RECOVERY_HAS_DUALSYSTEM_PARTITIONS := true
 RECOVERY_NEEDS_VSYNC := true
+TARGET_RECOVERY_INITRC := device/xiaomi/aries/recovery/init.rc
 
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/recovery.fstab:recovery/root/etc/miui.fstab \
