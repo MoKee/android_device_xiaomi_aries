@@ -89,7 +89,7 @@ TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 TARGET_USES_ION             := true
 USE_OPENGL_RENDERER         := true
 TARGET_USES_C2D_COMPOSITION := true
-COMMON_GLOBAL_CFLAGS        += -DNEW_ION_API
+TARGET_DISPLAY_INSECURE_MM_HEAP := true
 
 # Audio
 BOARD_USES_ALSA_AUDIO                   := true
@@ -123,7 +123,7 @@ BLUETOOTH_HCI_USE_MCT                       := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/xiaomi/aries/bluetooth
 
 # Webkit
-ENABLE_WEBGL := true
+ENABLE_WEBGL            := true
 TARGET_FORCE_CPU_UPLOAD := true
 
 # Recovery

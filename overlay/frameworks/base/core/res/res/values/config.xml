@@ -252,4 +252,11 @@
          This is only for Xiaomi devices -->
      <bool name="config_dualsystem">true</bool>
 
+    <string-array name="config_locationProviderPackageNames" translatable="false">
+        <!-- The standard AOSP fused location provider -->
+        <item>com.android.location.fused</item>
+        <!-- The Google provider -->
+        <item>com.google.android.location</item>
+    </string-array>
+
 </resources>
