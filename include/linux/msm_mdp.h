@@ -573,13 +573,7 @@ struct mdp_buf_sync {
 	uint32_t acq_fen_fd_cnt;
 	int *acq_fen_fd;
 	int *rel_fen_fd;
-};
-
-struct mdp_buf_fence {
-	uint32_t flags;
-	uint32_t acq_fen_fd_cnt;
-	int acq_fen_fd[MDP_MAX_FENCE_FD];
-	int rel_fen_fd[MDP_MAX_FENCE_FD];
+	int *retire_fen_fd;
 };
 
 #define MDP_DISPLAY_COMMIT_OVERLAY 0x00000001
@@ -623,20 +617,5 @@ enum {
 	MDP_WRITEBACK_MIRROR_RESUME,
 };
 
-#ifdef __KERNEL__
-
-/* get the framebuffer physical address information */
-int get_fb_phys_info(unsigned long *start, unsigned long *len, int fb_num,
-	int subsys_id);
-struct fb_info *msm_fb_get_writeback_fb(void);
-int msm_fb_writeback_init(struct fb_info *info);
-int msm_fb_writeback_start(struct fb_info *info);
-int msm_fb_writeback_queue_buffer(struct fb_info *info,
-		struct msmfb_data *data);
-int msm_fb_writeback_dequeue_buffer(struct fb_info *info,
-		struct msmfb_data *data);
-int msm_fb_writeback_stop(struct fb_info *info);
-int msm_fb_writeback_terminate(struct fb_info *info);
-#endif
 
 #endif /*_MSM_MDP_H_*/
