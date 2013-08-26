@@ -46,7 +46,8 @@ PRODUCT_COPY_FILES += \
 
 ifneq ($(BUILD_KERNEL),true)
 PRODUCT_COPY_FILES += \
-    device/xiaomi/aries/kernel/wlan.ko:system/lib/modules/wlan.ko
+    device/xiaomi/aries/kernel/wlan.ko:system/lib/modules/wlan.ko \
+    device/xiaomi/aries/kernel/exfat.ko:system/lib/modules/exfat.ko
 endif
 
 PRODUCT_COPY_FILES += \
@@ -133,9 +134,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.handset.mic=digital \
     af.resampler.quality=255 \
     mpq.audio.decode=true
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.aries.power_profile=middle
 
 # Do not power down SIM card when modem is sent to Low Power Mode.
 PRODUCT_PROPERTY_OVERRIDES += \
