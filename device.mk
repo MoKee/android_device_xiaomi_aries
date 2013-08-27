@@ -135,6 +135,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     af.resampler.quality=255 \
     mpq.audio.decode=true
 
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.aries.power_profile=middle
+
 # Do not power down SIM card when modem is sent to Low Power Mode.
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.apm_sim_not_pwdn=1

@@ -127,3 +127,65 @@ service qseecomd /system/bin/qseecomd
 on property:ro.baseband=mdm
     mkdir /data/qcks 0770 system system
     start kickstart
+
+# Start up mdm_helper if sglte detected
+on property:ro.baseband=sglte
+    mkdir /data/misc/mdmhelperdata 0700
+    start mdm_helper
+
+on property:persist.sys.aries.power_profile=high
+#    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 0
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 85
+    write /sys/devices/system/cpu/cpufreq/interactive/max_boost 0
+    write /sys/devices/system/cpu/cpufreq/interactive/sustain_load 80
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 80000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2000000
+    write /sys/class/leds/lcd-backlight/max_brightness 255
+    write /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk 400000000
+#    stop mpdecision
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2000000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2000000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2000000
+
+on property:persist.sys.aries.power_profile=middle
+#    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 100000
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 95
+    write /sys/devices/system/cpu/cpufreq/interactive/max_boost 350000
+    write /sys/devices/system/cpu/cpufreq/interactive/sustain_load 80
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2000000
+    write /sys/class/leds/lcd-backlight/max_brightness 255
+    write /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk 400000000
+#    start mpdecision
+
+on property:persist.sys.aries.power_profile=low
+#    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 100000
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 95
+    write /sys/devices/system/cpu/cpufreq/interactive/max_boost 350000
+    write /sys/devices/system/cpu/cpufreq/interactive/sustain_load 80
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 918000
+    write /sys/class/leds/lcd-backlight/max_brightness 70
+    write /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk 200000000
+#    start mpdecision
+
+on property:persist.sys.display_prefer=0
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 2
+
+on property:persist.sys.display_prefer=1
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 1
+
+on property:persist.sys.display_prefer=2
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 2
+
+on property:persist.sys.display_prefer=3
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 3
+
+on property:persist.sys.display_ce=10
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 240
+
+on property:persist.sys.display_ce=11
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 16
