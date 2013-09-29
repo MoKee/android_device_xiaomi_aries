@@ -155,6 +155,7 @@ TARGET_RECOVERY_INITRC := device/xiaomi/aries/recovery/init.rc
 
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/recovery.fstab:recovery/root/etc/miui.fstab \
+    device/xiaomi/aries/recovery/etc/fstab:recovery/root/etc/fstab \
     device/xiaomi/aries/recovery/device.conf:recovery/root/res/device.conf \
     device/xiaomi/aries/recovery/sbin/stock:recovery/root/sbin/stock \
     device/xiaomi/aries/recovery/sbin/recovery.sh:recovery/root/sbin/recovery.sh
