@@ -5,7 +5,7 @@ $(call inherit-product, vendor/mk/config/gsm.mk)
 TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 720
 
-# Inherit some common LOSP stuff.
+# Inherit some common mokee stuff.
 $(call inherit-product, vendor/mk/config/common_full_phone.mk)
 
 # Inherit device configuration
