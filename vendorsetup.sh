@@ -14,4 +14,4 @@
 # limitations under the License.
 #
 
-add_lunch_combo losp_aries-userdebug
+add_lunch_combo mk_aries-userdebug
