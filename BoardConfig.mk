@@ -153,3 +153,7 @@ BOARD_LIB_DUMPSTATE := libdumpstate.aries
 BOARD_USE_XIAOMI_MITWO_HARDWARE := true
 
 -include vendor/xiaomi/aries/BoardConfigVendor.mk
+
+ifdef MK_RELEASE
+WITH_DEXPREOPT := true
+endif

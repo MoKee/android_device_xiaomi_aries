@@ -1,0 +1,10 @@
+[
+ {
+   "repository": "android_vendor_xiaomi_aries",
+   "target_path": "vendor/xiaomi/aries"
+ },
+ {
+   "repository": "android_vendor_xiaomi_qcom-common",
+   "target_path": "vendor/xiaomi/qcom-common"
+ }
+]
