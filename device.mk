@@ -39,6 +39,10 @@ PRODUCT_PACKAGES += \
     VisualizationWallpapers \
     librs_jni
 
+# RIL
+# PRODUCT_COPY_FILES += \
+#    device/xiaomi/aries/libril.so:system/lib/libril.so
+
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
     device/xiaomi/aries/WCNSS_qcom_cfg.ini:system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini \
@@ -46,13 +50,15 @@ PRODUCT_COPY_FILES += \
 
 ifneq ($(BUILD_KERNEL),true)
 PRODUCT_COPY_FILES += \
-    device/xiaomi/aries/kernel/wlan.ko:system/lib/modules/wlan.ko \
-    device/xiaomi/aries/kernel/exfat.ko:system/lib/modules/exfat.ko
+    device/xiaomi/aries/kernel/exfat.ko:system/lib/modules/exfat.ko \
+    device/xiaomi/aries/kernel/radio-iris-transport.ko:system/lib/modules/radio-iris-transport.ko \
+    device/xiaomi/aries/kernel/wlan.ko:system/lib/modules/wlan.ko
 endif
 
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/configs/snd_soc_msm_2x_Fusion3:system/etc/snd_soc_msm/snd_soc_msm_2x_Fusion3 \
-    device/xiaomi/aries/configs/audio_policy.conf:system/etc/audio_policy.conf
+    device/xiaomi/aries/configs/audio_policy.conf:system/etc/audio_policy.conf \
+    device/xiaomi/aries/configs/audio_effects.conf:system/etc/audio_effects.conf
 
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/thermald-aries.conf:system/etc/thermald.conf
@@ -67,10 +73,8 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/aries/configs/init.qcom.class_main.sh:root/init.qcom.class_main.sh \
     device/xiaomi/aries/configs/media_profiles.xml:system/etc/media_profiles.xml \
     device/xiaomi/aries/configs/media_codecs.xml:system/etc/media_codecs.xml \
-    device/xiaomi/aries/configs/init.target.rc:root/init.target.rc \
-    device/xiaomi/aries/configs/init.aries.syspart_system.rc:root/init.aries.syspart_system.rc \
-    device/xiaomi/aries/configs/init.aries.syspart_system1.rc:root/init.aries.syspart_system1.rc \
-    device/xiaomi/aries/configs/init.qcom.usb.sh:root/init.qcom.usb.sh
+    device/xiaomi/aries/configs/init.qcom.usb.sh:root/init.qcom.usb.sh \
+    device/xiaomi/aries/configs/init.qcom.sh:root/init.qcom.sh
 
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
@@ -79,11 +83,10 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/aries/init.qcom.fm.sh:system/etc/init.qcom.fm.sh \
     device/xiaomi/aries/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh
 
-
 # Prebuilt kl and kcm keymaps
 PRODUCT_COPY_FILES += \
     device/xiaomi/aries/atmel_mxt_ts.kl:system/usr/keylayout/atmel_mxt_ts.kl \
-    device/xiaomi/aries/Button_Jack.kl:system/usr/keylayout/Button_Jack.kl \
+    device/xiaomi/aries/apq8064-tabla-snd-card_Button_Jack.kl:system/usr/keylayout/apq8064-tabla-snd-card_Button_Jack.kl \
     device/xiaomi/aries/cyttsp-i2c.kl:system/usr/keylayout/cyttsp-i2c.kl \
     device/xiaomi/aries/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
     device/xiaomi/aries/keypad_8960.kl:system/usr/keylayout/keypad_8960.kl \
@@ -109,6 +112,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
+    frameworks/native/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml
 
@@ -134,6 +138,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.handset.mic=digital \
     af.resampler.quality=255 \
     mpq.audio.decode=true
+
+# Allow debug in GB ramdisk
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.secure=0 \
+    ro.allow.mock.location=0 \
+    ro.debuggable=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.aries.power_profile=middle
@@ -205,7 +215,21 @@ PRODUCT_PACKAGES += \
 
 # Light
 PRODUCT_PACKAGES += \
-    lights.msm8960
+    lights.aries
+
+# fmradio support
+PRODUCT_PACKAGES += \
+    qcom.fmradio \
+    libqcomfm_jni \
+    FM2 \
+    FMRecord
+
+# transmitter isn't supported
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.fm.transmitter=false
+	
+PRODUCT_PACKAGES += \
+  dualboot_init
 
 # RIL
 PRODUCT_PACKAGES += \
@@ -214,20 +238,30 @@ PRODUCT_PACKAGES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     rild.libpath=/system/lib/libril-qc-qmi-1.so
 
+#cdma
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.telephony.default_network=7 \
     ro.cdma.home.operator.numeric=46003 \
     ro.cdma.factory=china
 
+#enable svdo by default
 PRODUCT_PROPERTY_OVERRIDES += \
-    telephony.lteOnCdmaDevice=0
+    telephony.lteOnCdmaDevice=0 \
+    ril.subscription.types=NV,RUIM
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    pm.sleep_mode=1 \
+    ro.ril.disable.power.collapse=0 \
+    ro.kernel.android.checkjni=0 \
+    windowsmgr.max_events_per_sec=150 \
+    ro.media.enc.jpeg.quality=100
 
 PRODUCT_PROPERTY_OVERRIDES += \
     drm.service.enabled=true
 
 PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0 \
-    wifi.supplicant_scan_interval=15
+    wifi.supplicant_scan_interval=180
 
 # Enable AAC 5.1 output
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -238,10 +272,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.qc.sensors.wl_dis=true
-
-# fuse sdcard
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.fuse_sdcard=true
 
 # Qualcomm random numbers generated
 PRODUCT_PACKAGES += qrngd
@@ -279,4 +309,4 @@ PRODUCT_COPY_FILES += \
 $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
 
 # This is the aries-specific audio package
-$(call inherit-product, frameworks/base/data/sounds/OldAudio.mk)
+$(call inherit-product, frameworks/base/data/sounds/AudioPackage10.mk)

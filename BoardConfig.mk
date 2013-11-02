@@ -16,8 +16,6 @@
 
 LOCAL_PATH := $(cal my-dir)
 
-TARGET_SPECIFIC_HEADER_PATH := device/xiaomi/aries/include
-
 TARGET_NO_RADIOIMAGE := true
 TARGET_NO_BOOTLOADER := true
 
@@ -26,9 +24,12 @@ TARGET_BOOTLOADER_BOARD_NAME := aries
 TARGET_BOOTLOADER_NAME       := aries
 TARGET_BOARD_INFO_FILE       := device/xiaomi/aries/board-info.txt
 
+# Use the CM PowerHAL
+# TARGET_USES_CM_POWERHAL := true
+
 # Flags
-TARGET_GLOBAL_CFLAGS += -mfpu=neon-vfpv4 -mfloat-abi=softfp  -DQCOM_HARDWARE
-TARGET_GLOBAL_CPPFLAGS += -mfpu=neon-vfpv4 -mfloat-abi=softfp -DQCOM_HARDWARE
+TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp -DQCOM_HARDWARE
+TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp -DQCOM_HARDWARE
 COMMON_GLOBAL_CFLAGS += -D__ARM_USE_PLD -D__ARM_CACHE_LINE_SIZE=64
 
 # Architecture
@@ -75,11 +76,16 @@ WIFI_DRIVER_MODULE_NAME          := "wlan"
 WIFI_DRIVER_FW_PATH_STA          := "sta"
 WIFI_DRIVER_FW_PATH_AP           := "ap"
 
+# FM
+COMMON_GLOBAL_CFLAGS += -DQCOM_FM_ENABLED
+QCOM_FM_ENABLED := true
+TARGET_ADDITIONAL_BOOTCLASSPATH := qcom.fmradio
+
 BOARD_EGL_CFG := device/xiaomi/aries/configs/egl.cfg
 
 TARGET_QCOM_MEDIA_VARIANT   := caf
 TARGET_QCOM_DISPLAY_VARIANT := caf
-TARGET_QCOM_AUDIO_VARIANT   := aries
+TARGET_QCOM_AUDIO_VARIANT   := caf
 TARGET_USES_QCOM_BSP        := true
 
 # QCOM enhanced A/V
@@ -114,8 +120,6 @@ BOARD_HAVE_NEW_QC_GPS := true
 #TARGET_NO_RPC := true
 
 # Camera
-USE_DEVICE_SPECIFIC_CAMERA := true
-TARGET_PROVIDES_CAMERA_HAL := true
 COMMON_GLOBAL_CFLAGS       += -DMR0_CAMERA_BLOB -DDISABLE_HW_ID_MATCH_CHECK -DQCOM_BSP_CAMERA_ABI_HACK -DQCOM_BSP
 
 # Bluetooth
@@ -132,6 +136,9 @@ TARGET_FORCE_CPU_UPLOAD := true
 TARGET_RECOVERY_FSTAB            := device/xiaomi/aries/configs/fstab.aries
 RECOVERY_FSTAB_VERSION           := 2
 TARGET_RECOVERY_PIXEL_FORMAT     := "RGBX_8888"
+#BOARD_CUSTOM_GRAPHICS            := ../../../device/xiaomi/aries/recovery/graphics_en.c
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/xiaomi/aries/recovery/recovery_keys.c
+BOARD_USE_CUSTOM_RECOVERY_FONT   := \"roboto_15x24.h\"
 BOARD_HAS_NO_SELECT_BUTTON       := true
 
 TARGET_USERIMAGES_USE_EXT4         := true
@@ -142,18 +149,40 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 373293056
 BOARD_PERSISTIMAGE_PARTITION_SIZE  := 8388608
 BOARD_CACHEIMAGE_PARTITION_SIZE    := 402653184
 BOARD_FLASH_BLOCK_SIZE             := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
-BOARD_VOLD_EMMC_SHARES_DEV_MAJOR   := true
-BOARD_VOLD_MAX_PARTITIONS          := 36
 
 BOARD_USES_SECURE_SERVICES := true
 
 BOARD_LIB_DUMPSTATE := libdumpstate.aries
 
-# MiTwo hardware flag
-BOARD_USE_XIAOMI_MITWO_HARDWARE := true
-
 -include vendor/xiaomi/aries/BoardConfigVendor.mk
 
-ifdef MK_RELEASE
-WITH_DEXPREOPT := true
-endif
+BOARD_SEPOLICY_DIRS += \
+    device/xiaomi/aries/sepolicy
+
+BOARD_SEPOLICY_UNION += \
+    file_contexts \
+    property_contexts \
+    te_macros \
+    bluetooth_loader.te \
+    bridge.te \
+    camera.te \
+    device.te \
+    dhcp.te \
+    domain.te \
+    drmserver.te \
+    file.te \
+    kickstart.te \
+    init.te \
+    mediaserver.te \
+    mpdecision.te \
+    netmgrd.te \
+    qmux.te \
+    rild.te \
+    rmt.te \
+    sensors.te \
+    surfaceflinger.te \
+    system.te \
+    tee.te \
+    thermald.te \
+    ueventd.te \
+    wpa_supplicant.te

@@ -26,14 +26,15 @@
 #
 
 import init.aries.usb.rc
-import init.aries.syspart_${ro.boot.syspart}.rc
-import init.target.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
     write /proc/sys/vm/legacy_va_layout 1
+    mkdir /firmware 0771 system system
+    symlink /data/tombstones /tombstones
 
 on init
+    mkdir /storage 0775 system system
     mkdir /storage/sdcard0 0775 system system
     mkdir /storage/usbdisk 0775 system system
     mkdir /storage_int 0775 media_rw media_rw
@@ -41,13 +42,33 @@ on init
     export EXTERNAL_STORAGE /storage/sdcard0
 
     symlink /storage/sdcard0 /sdcard
+    symlink /storage/sdcard0 /storage_int
     symlink /storage/sdcard0 /mnt/sdcard
     symlink /storage/usbdisk /usbdisk
     symlink /storage/usbdisk /mnt/usbdisk
     
     # Set permissions for persist partition
     mkdir /persist 0771 system system
-   
+    export BOOTCLASSPATH ${BOOTCLASSPATH}:/system/framework/qcom.fmradio.jar
+
+on fs
+    exec /sbin/dualboot_init ./fstab.aries
+    mount_all ./fstab.aries.patched
+    mkdir /persist/property
+    chmod 0775 /persist/property
+
+    chmod 0775 /storage_int
+    chown media_rw media_rw /storage_int
+    mkdir /storage_int/ramdump 0775
+    chown media_rw media_rw /storage_int/ramdump
+    mkdir /storage_int/ramdump/mdm 0775
+    chown media_rw media_rw /storage_int/ramdump/mdm
+
+    chown system system /dev/ramdump_dsps
+    chown system system /dev/ramdump_lpass
+    chown system system /dev/ramdump_riva
+    chown system system /dev/ramdump_smem-dsps
+
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
@@ -174,7 +195,6 @@ on boot
     # connections on high-throughput links get dropped when
     # an ack packet comes out of order
     write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
-    setprop ro.fuse_sdcard ${persist.fuse_sdcard}
 
     chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
@@ -200,6 +220,63 @@ on boot
     chown system system /sys/devices/system/cpu/cpu3/online
     chmod 0664 /sys/devices/system/cpu/cpu3/online
 
+    # interactive governor
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boost
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boost
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/input_boost
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/input_boost
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+
+    # ondemand governor
+    chown system system /sys/devices/system/cpu/cpufreq/ondemand/boostfreq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/boostfreq
+    chown system system /sys/devices/system/cpu/cpufreq/ondemand/boostpulse
+    chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/boostpulse
+    chown system system /sys/devices/system/cpu/cpufreq/ondemand/boosttime
+    chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+    chown system system /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
+    chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
+    chown system system /sys/devices/system/cpu/cpufreq/ondemand/down_differential
+    chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/down_differential
+    chown system system /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+    chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+    chown system system /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
+    chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
+    chown system system /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+    chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+    chown system system /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+    chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+
+    # Assume SMP uses shared cpufreq policy for all CPUs
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+
+    # allow system to modify cpufreq control files
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+
     start qcamerasvr
 
 # import cne init file
@@ -208,6 +285,12 @@ on post-fs
 
 # msm specific files that need to be created on /data
 on post-fs-data
+    mkdir /data/tombstones 0771 system system
+    mkdir /tombstones/modem 0771 system system
+    mkdir /tombstones/lpass 0771 system system
+    mkdir /tombstones/wcnss 0771 system system
+    mkdir /tombstones/dsps 0771 system system
+
     mkdir /data/media 0770 media_rw media_rw
 
     # Create the directories used by the Wireless subsystem
@@ -244,21 +327,6 @@ on post-fs-data
 
     #Create the symlink to qcn wpa_supplicant folder for ar6000 wpa_supplicant
     mkdir /data/system 0775 system system
-
-    #Create directory used by sensor subsystem(dsps)
-    mkdir /data/system/sensors
-    touch /data/system/sensors/settings
-    chmod 775 /data/system/sensors
-    write /data/system/sensors/settings 1
-    chmod 664 /data/system/sensors/settings
-    chown system /data/system/sensors/settings
-
-    mkdir /data/misc/sensors
-    chmod 775 /data/misc/sensors
-    mkdir /persist/misc/sensors
-    chmod 775 /persist/misc/sensors
-
-    start sensors
 
     #Create directories for wiper services
     mkdir /data/wpstiles/ 0755 shell
@@ -661,15 +729,6 @@ service profiler_daemon /system/bin/profiler_daemon
     group root
     disabled
 
-service sdcard /system/bin/sdcard /storage_int /storage/sdcard0 1023 1023
-    class late_start
-
-on property:ro.fuse_sdcard=true
-    start sdcard
-
-on property:vold.decrypt=trigger_restart_framework
-    setprop ro.fuse_sdcard ${persist.fuse_sdcard}
-
 service hcidump /system/bin/sh /system/etc/hcidump.sh
     user bluetooth
     group bluetooth system net_bt_admin net_admin
@@ -720,3 +779,119 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
     class late_start
     user media
     group system camera inet input graphics
+
+
+#start GNSS/Sensor interface daemon
+service gsiff_daemon /system/bin/gsiff_daemon
+    class late_start
+    user system
+    group gps qcom_oncrpc net_raw
+
+service thermald /system/bin/thermald -c /system/etc/thermald.conf
+     class main
+    socket thermald stream 0666 root root
+    user root
+
+service mpdecision /system/bin/mpdecision --avg_comp
+    class main
+
+service ramdump_riva /system/bin/logwrapper /system/bin/ramdump riva /dev/ramdump_riva /storage_int/ramdump/riva_ramdump.bin
+   class late_start
+   user system
+   group system media_rw
+
+service ramdump_dsps /system/bin/logwrapper /system/bin/ramdump dsps /dev/ramdump_dsps /storage_int/ramdump/dsps_ramdump.bin
+   class late_start
+   user system
+   group system media_rw
+
+service ramdump_dsps2 /system/bin/logwrapper /system/bin/ramdump dsps2 /dev/ramdump_smem-dsps /storage_int/ramdump/dsps2_ramdump.bin
+   class late_start
+   user system
+   group system media_rw
+
+service kickstart /system/bin/qcks -i /firmware/image/
+    oneshot
+    disabled
+
+service mdm_helper /system/bin/mdm_helper
+    class main
+    onrestart setprop ro.service.mdm_helper_restarted "true"
+    disabled
+
+service qrngd /system/bin/qrngd -f
+   class main
+   user root
+   group root
+
+service qseecomd /system/bin/qseecomd
+   class core
+   user system
+   group system
+
+# Start kickstart if mdm is detected
+on property:ro.baseband=mdm
+    mkdir /data/qcks 0770 system system
+    start kickstart
+
+# Start up mdm_helper if sglte detected
+on property:ro.baseband=sglte
+    mkdir /data/misc/mdmhelperdata 0700
+    start mdm_helper
+
+on property:persist.sys.aries.power_profile=high
+#    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 0
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 85
+    write /sys/devices/system/cpu/cpufreq/interactive/max_boost 0
+    write /sys/devices/system/cpu/cpufreq/interactive/sustain_load 80
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 80000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2000000
+    write /sys/class/leds/lcd-backlight/max_brightness 255
+    write /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk 400000000
+#    stop mpdecision
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2000000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2000000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2000000
+
+on property:persist.sys.aries.power_profile=middle
+#    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 100000
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 95
+    write /sys/devices/system/cpu/cpufreq/interactive/max_boost 350000
+    write /sys/devices/system/cpu/cpufreq/interactive/sustain_load 80
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2000000
+    write /sys/class/leds/lcd-backlight/max_brightness 255
+    write /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk 400000000
+#    start mpdecision
+
+on property:persist.sys.aries.power_profile=low
+#    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 100000
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 95
+    write /sys/devices/system/cpu/cpufreq/interactive/max_boost 350000
+    write /sys/devices/system/cpu/cpufreq/interactive/sustain_load 80
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 918000
+    write /sys/class/leds/lcd-backlight/max_brightness 70
+    write /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk 200000000
+#    start mpdecision
+
+on property:persist.sys.display_prefer=0
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 2
+
+on property:persist.sys.display_prefer=1
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 1
+
+on property:persist.sys.display_prefer=2
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 2
+
+on property:persist.sys.display_prefer=3
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 3
+
+on property:persist.sys.display_ce=10
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 240
+
+on property:persist.sys.display_ce=11
+    write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 16

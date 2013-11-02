@@ -16,7 +16,6 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:settings="http://schemas.android.com/apk/res/com.android.phone">
-
     <PreferenceScreen
         android:key="button_apn_key"
         android:title="@string/apn_settings"
@@ -24,10 +23,10 @@
 
         <intent android:action="android.intent.action.MAIN"
             android:targetPackage="com.android.settings"
-            android:targetClass="com.android.settings.Settings$ApnSettingsActivity" />
+            android:targetClass="com.android.settings.ApnSettings" />
 
     </PreferenceScreen>
-    
+
     <com.android.phone.CdmaSystemSelectListPreference
         android:key="cdma_system_select_key"
         android:title="@string/cdma_system_select_title"

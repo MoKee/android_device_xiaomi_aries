@@ -6,7 +6,7 @@ LOCAL_PATH := $(cal my-dir)
 TARGET_KERNEL_SOURCE := kernel/xiaomi/aries
 ifeq ($(KERNEL_DEFCONFIG),)
 ifeq ($(TARGET_BUILD_VARIANT),eng)
-    #KERNEL_DEFCONFIG := msm8960-perf_defconfig
+#    KERNEL_DEFCONFIG := aries-perf-eng_defconfig
     KERNEL_DEFCONFIG := aries-perf-usr_defconfig
 else
     KERNEL_DEFCONFIG := aries-perf-usr_defconfig
