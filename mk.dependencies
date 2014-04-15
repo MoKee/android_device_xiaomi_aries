@@ -4,6 +4,14 @@
    "target_path": "vendor/xiaomi/aries"
  },
  {
+   "repository": "android_vendor_xiaomi_msm8960-common",
+   "target_path": "vendor/xiaomi/msm8960-common"
+ },
+ {
+   "repository": "android_vendor_xiaomi_qcom-common",
+   "target_path": "vendor/xiaomi/qcom-common"
+ },
+ {
    "repository": "android_kernel_xiaomi_aries",
    "target_path": "kernel/xiaomi/aries"
  },
