@@ -253,4 +253,8 @@
     <!-- Device supports LED flashlight -->
     <bool name="config_enableTorch">true</bool>
 
+    <!-- Performance profiles -->
+    <string name="config_perf_profile_prop">persist.sys.aries.power_profile</string>
+    <string name="config_perf_profile_default_entry">middle</string>
+
 </resources>
