@@ -36,9 +36,14 @@ PRODUCT_RESTRICT_VENDOR_FILES := false
 ## VoiceProc modules                                                                                              
 PRODUCT_PACKAGES += voiceproc_init.img
 PRODUCT_PACKAGES += voiceproc.img
+
 # Wifi
 PRODUCT_PACKAGES += wpa_supplicant_overlay.conf
 PRODUCT_PACKAGES += p2p_supplicant_overlay.conf
+
+# Radio and Telephony
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.telephony.ril_class=XiaomiQualcommRIL
 
 # GMS
 PRODUCT_PROPERTY_OVERRIDES += \
