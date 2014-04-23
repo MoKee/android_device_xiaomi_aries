@@ -1,12 +1,12 @@
+# Inherit device configuration
+$(call inherit-product, device/xiaomi/aries/full_aries.mk)
+
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 720
 
 # Inherit some common MK stuff.
 $(call inherit-product, vendor/mk/config/common_full_phone.mk)
-
-# Inherit device configuration
-$(call inherit-product, device/xiaomi/aries/full_aries.mk)
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := aries
