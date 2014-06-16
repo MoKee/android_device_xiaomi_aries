@@ -31,6 +31,11 @@ TARGET_BOOTLOADER_BOARD_NAME := aries
 TARGET_BOOTLOADER_NAME       := aries
 TARGET_BOARD_INFO_FILE       := device/xiaomi/aries/board-info.txt
 
+# Vendor Init
+TARGET_UNIFIED_DEVICE := true
+TARGET_INIT_VENDOR_LIB := libinit_msm
+TARGET_LIBINIT_DEFINES_FILE := device/xiaomi/aries/init/init_aries.c
+
 # Flags
 TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp -DQCOM_HARDWARE
 TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp -DQCOM_HARDWARE
