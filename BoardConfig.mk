@@ -16,7 +16,7 @@
 
 LOCAL_PATH := $(cal my-dir)
 
-BOARD_HAVE_XIAOMI := true
+BOARD_HAVE_XIAOMI_ARIES := true
 TARGET_SPECIFIC_HEADER_PATH := device/xiaomi/aries/include
 
 TARGET_KERNEL_SOURCE := kernel/xiaomi/aries
