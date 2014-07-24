@@ -250,6 +250,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.default_network=7 \
     ro.telephony.default_cdma_sub=0 \
     ro.telephony.call_ring.delay=200 \
+    ro.telephony.ril.v3=signalstrength \
     persist.omh.enabled=true
 
 PRODUCT_PROPERTY_OVERRIDES += \
