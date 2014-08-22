@@ -257,4 +257,9 @@
     <string name="config_perf_profile_prop">persist.sys.aries.power_profile</string>
     <string name="config_perf_profile_default_entry">middle</string>
 
+    <!-- Enable the option to check proximity sensor when deciding whether to
+     turn the screen on
+     NOTE ! - Enable for devices that have a fast response proximity sensor -->
+    <bool name="config_proximityCheckOnWake">true</bool>
+
 </resources>
