@@ -345,7 +345,8 @@ on post-fs-data
     # Hardware tunables
     chown root system /sys/class/timed_output/vibrator/amp
     chmod 0664 /sys/class/timed_output/vibrator/amp
-
+    chown root system /sys/devices/i2c-3/3-004b/disable_keys
+    chmod 0664 /sys/devices/i2c-3/3-004b/disable_keys
 
 on charger
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/system /system wait ro barrier=1
