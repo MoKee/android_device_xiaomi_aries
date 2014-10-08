@@ -17,6 +17,9 @@
 # Sample: This is where we'd set a backup provider if we had one
 # $(call inherit-product, device/sample/products/backup_overlay.mk)
 
+# Get APNs
+PRODUCT_COPY_FILES := device/xiaomi/aries/apns-conf.xml:system/etc/apns-conf.xml
+
 # include additional build utilities
 -include device/xiaomi/aries/utils.mk
 
