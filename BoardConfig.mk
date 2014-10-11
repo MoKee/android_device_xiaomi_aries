@@ -17,6 +17,7 @@
 LOCAL_PATH := $(cal my-dir)
 
 BOARD_HAVE_XIAOMI_ARIES := true
+BOARD_QCOM_HAS_PREBUILT_RIL := true
 TARGET_SPECIFIC_HEADER_PATH := device/xiaomi/aries/include
 
 TARGET_KERNEL_SOURCE := kernel/xiaomi/aries
