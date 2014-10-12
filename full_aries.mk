@@ -41,6 +41,10 @@ PRODUCT_PACKAGES += voiceproc.img
 PRODUCT_PACKAGES += wpa_supplicant_overlay.conf
 PRODUCT_PACKAGES += p2p_supplicant_overlay.conf
 
+# Radio and Telephony
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.telephony.ril_class=XiaomiQualcommRIL
+
 # GMS
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.clientidbase=android-xiaomi
