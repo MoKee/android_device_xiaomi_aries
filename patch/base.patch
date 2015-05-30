@@ -1,0 +1,16 @@
+diff --git a/frameworks/base/telephony/java/android/telephony/TelephonyManager.java b/frameworks/base/telephony/java/android/telephony/TelephonyManager.java
+index 4ee5c01..6f5d006 100644
+--- a/frameworks/base/telephony/java/android/telephony/TelephonyManager.java
++++ b/frameworks/base/telephony/java/android/telephony/TelephonyManager.java
+@@ -3371,7 +3371,10 @@ public class TelephonyManager {
+      */
+     public int getTetherApnRequired() {
+         try {
+-            return getITelephony().getTetherApnRequired();
++            ITelephony telephony = getITelephony();
++            if (telephony != null) {
++                return telephony.getTetherApnRequired();
++            }
+         } catch (RemoteException ex) {
+             Rlog.e(TAG, "hasMatchedTetherApnSetting RemoteException", ex);
+         } catch (NullPointerException ex) {
