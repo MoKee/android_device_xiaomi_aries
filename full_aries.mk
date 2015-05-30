@@ -17,9 +17,6 @@
 # Sample: This is where we'd set a backup provider if we had one
 # $(call inherit-product, device/sample/products/backup_overlay.mk)
 
-# Get APNs
-PRODUCT_COPY_FILES := device/xiaomi/aries/apns-conf.xml:system/etc/apns-conf.xml
-
 # include additional build utilities
 -include device/xiaomi/aries/utils.mk
 
@@ -33,18 +30,6 @@ PRODUCT_MODEL := MI 2
 PRODUCT_MANUFACTURER := Xiaomi
 PRODUCT_RESTRICT_VENDOR_FILES := false
 
-## VoiceProc modules                                                                                              
-PRODUCT_PACKAGES += voiceproc_init.img
-PRODUCT_PACKAGES += voiceproc.img
-
-# Wifi
-PRODUCT_PACKAGES += wpa_supplicant_overlay.conf
-PRODUCT_PACKAGES += p2p_supplicant_overlay.conf
-
-# Radio and Telephony
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.telephony.ril_class=XiaomiQualcommRIL
-
 # GMS
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.google.clientidbase=android-xiaomi
@@ -52,4 +37,3 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Inherit from hardware-specific part of the product configuration
 $(call inherit-product, device/xiaomi/aries/device.mk)
 $(call inherit-product-if-exists, vendor/xiaomi/aries/aries-vendor.mk)
-$(call inherit-product-if-exists, vendor/xiaomi/qcom-common/qcom-common-vendor.mk)

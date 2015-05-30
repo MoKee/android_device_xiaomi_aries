@@ -1,0 +1,19 @@
+
+project vendor/mk/
+diff --git a/vendor/mk/config/common.mk b/vendor/mk/config/common.mk
+index 401b17e..b186775 100644
+--- a/vendor/mk/config/common.mk
++++ b/vendor/mk/config/common.mk
+@@ -185,13 +185,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
+ PRODUCT_PACKAGES += \
+     Launcher3 \
+     MoKeeLauncher \
+-    AudioFX \
+     CMFileManager \
+     Eleven \
+     LockClock \
+     MoKeeHelper \
+-    MoKeePay \
+-    MoKeeSetupWizard \
++    MoKeePay
+ 

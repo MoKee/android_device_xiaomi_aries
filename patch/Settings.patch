@@ -1,0 +1,88 @@
+
+project packages/apps/Settings/
+diff --git a/packages/apps/Settings/AndroidManifest.xml b/packages/apps/Settings/AndroidManifest.xml
+index 218ce05..03fa331 100644
+--- a/packages/apps/Settings/AndroidManifest.xml
++++ b/packages/apps/Settings/AndroidManifest.xml
+@@ -2448,7 +2448,7 @@
+             android:excludeFromRecents="true" >
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+-                <category android:name="android.intent.category.LAUNCHER" />
++                <category android:name="android.intent.category.DEFAULT" />
+             </intent-filter>
+         </activity>
+ 
+@@ -2459,7 +2459,7 @@
+             android:excludeFromRecents="true" >
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+-                <category android:name="android.intent.category.LAUNCHER" />
++                <category android:name="android.intent.category.DEFAULT" />
+             </intent-filter>
+         </activity>
+ 
+diff --git a/packages/apps/Settings/res/values-zh-rCN/strings.xml b/packages/apps/Settings/res/values-zh-rCN/strings.xml
+index fc3d694..aae7ff0 100644
+--- a/packages/apps/Settings/res/values-zh-rCN/strings.xml
++++ b/packages/apps/Settings/res/values-zh-rCN/strings.xml
+@@ -2406,6 +2406,7 @@
+     <string name="lock_screen_notifications_interstitial_message" msgid="6164532459432182244">"在设备锁定时，您希望通知如何显示？"</string>
+     <string name="app_notifications_title" msgid="5810577805218003760">"应用通知"</string>
+     <string name="other_sound_settings" msgid="3151004537006844718">"其他提示音"</string>
++    <string name="dolby_sound_settings">"杜比音效"</string>
+     <string name="dial_pad_tones_title" msgid="1999293510400911558">"拨号键盘提示音"</string>
+     <string name="screen_locking_sounds_title" msgid="1340569241625989837">"屏幕锁定提示音"</string>
+     <string name="docking_sounds_title" msgid="155236288949940607">"基座提示音"</string>
+diff --git a/packages/apps/Settings/res/values-zh-rHK/strings.xml b/packages/apps/Settings/res/values-zh-rHK/strings.xml
+index ffaac2c..d0c8a0a 100644
+--- a/packages/apps/Settings/res/values-zh-rHK/strings.xml
++++ b/packages/apps/Settings/res/values-zh-rHK/strings.xml
+@@ -2407,6 +2407,7 @@
+     <string name="lock_screen_notifications_interstitial_message" msgid="6164532459432182244">"當裝置鎖定時，您要如何顯示通知？"</string>
+     <string name="app_notifications_title" msgid="5810577805218003760">"應用程式通知"</string>
+     <string name="other_sound_settings" msgid="3151004537006844718">"其他音效"</string>
++    <string name="dolby_sound_settings">"杜比音效"</string>
+     <string name="dial_pad_tones_title" msgid="1999293510400911558">"撥號鍵盤音效"</string>
+     <string name="screen_locking_sounds_title" msgid="1340569241625989837">"螢幕鎖定音效"</string>
+     <string name="docking_sounds_title" msgid="155236288949940607">"插座音效"</string>
+diff --git a/packages/apps/Settings/res/values-zh-rTW/strings.xml b/packages/apps/Settings/res/values-zh-rTW/strings.xml
+index ad0bbda..02f3468 100644
+--- a/packages/apps/Settings/res/values-zh-rTW/strings.xml
++++ b/packages/apps/Settings/res/values-zh-rTW/strings.xml
+@@ -2407,6 +2407,7 @@
+     <string name="lock_screen_notifications_interstitial_message" msgid="6164532459432182244">"當裝置鎖定時，您要如何顯示通知？"</string>
+     <string name="app_notifications_title" msgid="5810577805218003760">"應用程式通知"</string>
+     <string name="other_sound_settings" msgid="3151004537006844718">"其他音效"</string>
++    <string name="dolby_sound_settings">"杜比音效"</string>
+     <string name="dial_pad_tones_title" msgid="1999293510400911558">"撥號鍵盤音效"</string>
+     <string name="screen_locking_sounds_title" msgid="1340569241625989837">"螢幕鎖定音效"</string>
+     <string name="docking_sounds_title" msgid="155236288949940607">"固定音效"</string>
+diff --git a/packages/apps/Settings/res/values/strings.xml b/packages/apps/Settings/res/values/strings.xml
+index c202ecd..71e5829 100644
+--- a/packages/apps/Settings/res/values/strings.xml
++++ b/packages/apps/Settings/res/values/strings.xml
+@@ -5736,6 +5736,7 @@
+ 
+     <!-- Sound & notification > Sound section: Title for the other sounds option and associated settings page. [CHAR LIMIT=30] -->
+     <string name="other_sound_settings">Other sounds</string>
++    <string name="dolby_sound_settings">dolby_sounds</string>
+ 
+     <!-- Sound & notification > Other sounds: Title for the option enabling touch sounds for dial pad tones. [CHAR LIMIT=30] -->
+     <string name="dial_pad_tones_title">Dial pad tones</string>
+diff --git a/packages/apps/Settings/res/xml/sounds.xml b/packages/apps/Settings/res/xml/sounds.xml
+index e25b184..b2cb1a8 100644
+--- a/packages/apps/Settings/res/xml/sounds.xml
++++ b/packages/apps/Settings/res/xml/sounds.xml
+@@ -111,6 +111,11 @@
+                 android:fragment="com.android.settings.notification.OtherSoundSettings" />
+     </PreferenceCategory>
+ 
++        <!-- Dolby sounds -->
++    <PreferenceScreen android:title="@string/dolby_sound_settings" android:key="dolby_sounds">
++        <intent android:targetPackage="com.dolby.ds1appUI" android:action="android.intent.action.MAIN" android:targetClass="com.dolby.ds1appUI.MainActivity" />
++    </PreferenceScreen>
++
+     <PreferenceCategory
+             android:key="vibrate"
+             android:title="@string/category_vibrate">
