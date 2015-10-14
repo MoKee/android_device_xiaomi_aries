@@ -595,6 +595,7 @@ service audiod /system/bin/audiod
 
 service netmgrd /system/bin/netmgrd
     class main
+    group radio system
     disabled
 
 service sensors /system/bin/sensors.qcom
