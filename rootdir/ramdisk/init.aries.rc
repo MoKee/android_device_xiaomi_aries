@@ -775,7 +775,7 @@ service sysmatsir /system/bin/smonsir
 on property:persist.sysmatsir.enable=1
     start sysmatsir
 
-service charger /sbin/healthd -c
+service charger /charger
     class charger
     critical
     seclabel u:r:charger:s0
