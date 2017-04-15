@@ -551,7 +551,7 @@ service config_bluetooth /system/bin/sh /system/etc/init.qcom.bt.sh "onboot"
 service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
     class late_start
     user bluetooth
-    group qcom_oncrpc bluetooth net_bt_admin system
+    group bluetooth net_bt_admin system
     disabled
     oneshot
 
@@ -697,13 +697,13 @@ service dhcpcd_bnep4 /system/bin/dhcpcd -BKLG
 service gpsone_daemon /system/bin/gpsone_daemon
     class late_start
     user gps
-    group gps qcom_oncrpc inet net_raw
+    group gps inet net_raw
     disabled
 
 service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
     class late_start
     user system
-    group system qcom_oncrpc
+    group system
     disabled
     oneshot
 
