@@ -104,6 +104,9 @@ QCOM_FM_ENABLED := true
 TARGET_FM_LEGACY_PATCHLOADER := true
 BOARD_HAVE_QCOM_FM := true
 
+# Use mke2fs to create ext4 images
+TARGET_USES_MKE2FS := true
+
 # Fonts
 EXTENDED_FONT_FOOTPRINT := true
 
