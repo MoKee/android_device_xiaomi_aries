@@ -20,18 +20,9 @@
 # Get the long list of APNs
 PRODUCT_COPY_FILES := device/xiaomi/msm8960-common/configs/apns-conf.xml:system/etc/apns-conf.xml
 
-
 # qcom common
 $(call inherit-product, device/xiaomi/msm8960-common/common.mk)
 
-# Inherit from the common Open Source product configuration
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-
-PRODUCT_NAME := aries
-PRODUCT_DEVICE := aries
-PRODUCT_BRAND := Xiaomi
-PRODUCT_MODEL := MI 2
-PRODUCT_MANUFACTURER := Xiaomi
 PRODUCT_RESTRICT_VENDOR_FILES := false
 
 # Inherit from hardware-specific part of the product configuration
