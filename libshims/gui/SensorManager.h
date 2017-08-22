@@ -26,7 +26,7 @@
 #include <utils/Singleton.h>
 #include <utils/Vector.h>
 
-#include <gui/SensorEventQueue.h>
+#include <sensor/SensorEventQueue.h>
 
 // ----------------------------------------------------------------------------
 // Concrete types for the NDK
@@ -50,7 +50,7 @@ public:
     SensorManager();
     ~SensorManager();
 
-    ssize_t getSensorList(Sensor const* const** list) const;
+    ssize_t getSensorList(Sensor const* const** list);
     Sensor const* getDefaultSensor(int type);
     sp<SensorEventQueue> createEventQueue();
 
@@ -58,7 +58,7 @@ private:
     // DeathRecipient interface
     void sensorManagerDied();
 
-    status_t assertStateLocked() const;
+    status_t assertStateLocked();
 
 private:
     mutable Mutex mLock;
