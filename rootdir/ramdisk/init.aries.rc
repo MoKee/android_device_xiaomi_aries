@@ -368,9 +368,6 @@ on post-fs-data
     mkdir /data/fota 0771
     chown system system /data/fota
 
-    # Provide the access to hostapd.conf only to root and group
-    chmod 0660 /data/hostapd/hostapd.conf
-
     chown system system /dev/sysmatdrv
     chmod 0666 /dev/sysmatdrv
 
@@ -754,13 +751,6 @@ service ppd /system/bin/mm-pp-daemon
     user system
     socket pps stream 0660 system system graphics
     group system graphics
-    disabled
-
-service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
-    class late_start
-    user root
-    group root
-    oneshot
     disabled
 
 service time_daemon /system/bin/time_daemon
