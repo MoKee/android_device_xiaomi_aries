@@ -164,7 +164,8 @@ PRODUCT_COPY_FILES += \
 
 # Shims
 PRODUCT_PACKAGES += \
-    libshim_camera
+    libshim_camera \
+    libshim_atomic
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
