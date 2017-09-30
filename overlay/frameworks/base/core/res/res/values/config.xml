@@ -269,15 +269,6 @@
         <item>hsupa:4094,87380,704512,4096,16384,110208</item>
     </string-array>
 
-    <string-array translatable="false" name="config_globalActionsList">
-        <item>power</item>
-        <item>reboot</item>
-        <item>airplane</item>
-        <item>silent</item>
-        <item>bugreport</item>
-        <item>users</item>
-    </string-array>
-
     <!-- Configuartion to set zen mode when silent mode is on -->
     <!--
     <bool name="config_setZenModeWhenSilentModeOn">true</bool>
