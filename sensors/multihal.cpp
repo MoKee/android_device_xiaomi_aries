@@ -694,6 +694,7 @@ static void lazy_init_sensors_list() {
     sub_hw_versions = NULL;
 
     pthread_mutex_unlock(&init_sensors_mutex);
+    pthread_mutex_unlock(&queue_mutex);
     ALOGV("end lazy_init_sensors_list");
 }
 
@@ -753,6 +754,8 @@ static int open_sensors(const struct hw_module_t* hw_module, const char* name,
     dev->proxy_device.inject_sensor_data = device__inject_sensor_data;
 
     dev->nextReadIndex = 0;
+
+    pthread_mutex_lock(&queue_mutex);
 
     sub_hw_versions = new std::unordered_map<hw_module_t *, int>();
     // Open() the subhal modules. Remember their devices in a vector parallel to sub_hw_modules.
