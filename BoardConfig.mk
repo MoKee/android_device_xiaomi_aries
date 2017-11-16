@@ -79,6 +79,9 @@ USE_DEVICE_SPECIFIC_QCOM_PROPRIETARY        := true
 # USB
 TARGET_USES_LEGACY_ADB_INTERFACE := true
 
+# Filesystem
+TARGET_FS_CONFIG_GEN := $(LOCAL_PATH)/config.fs
+
 # Lineage Hardware
 BOARD_HARDWARE_CLASS += \
     $(LOCAL_PATH)/lineagehw
