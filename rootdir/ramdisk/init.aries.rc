@@ -585,7 +585,7 @@ service port-bridge /system/bin/port-bridge /dev/smd0 /dev/ttyGS0
 service qmuxd /system/bin/qmuxd
     class main
     user radio
-    group radio audio bluetooth gps qcom_diag wakelock
+    group radio audio bluetooth gps oem_2950 wakelock
     disabled
 
 service audiod /system/bin/audiod
