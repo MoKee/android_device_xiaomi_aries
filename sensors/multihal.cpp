@@ -185,10 +185,33 @@ void *writerTask(void* ptr) {
 static struct sensor_t const* global_sensors_list = NULL;
 static int global_sensors_count = -1;
 
+typedef struct batch_data {
+    bool empty;
+    int handle;
+    int flags;
+    int64_t period_ns;
+    int64_t timeout;
+
+    batch_data() {
+        this->empty = true;
+    }
+
+    void update_batch_data(int handle, int flags, int period_ns, int timeout) {
+        this->empty = false;
+        this->handle = handle;
+        this->flags = flags;
+        this->period_ns = period_ns;
+        this->timeout = timeout;
+    }
+} sensors_batch_buff;
+
+static sensors_batch_buff* sensors_batch_list = NULL;
+static int* sensors_enable_state = NULL;
+
 /*
  * Extends a sensors_poll_device_1 by including all the sub-module's devices.
  */
- struct sensors_poll_context_t {
+struct sensors_poll_context_t {
     /*
      * This is the device that SensorDevice.cpp uses to make API calls
      * to the multihal, which fans them out to sub-HALs.
@@ -263,6 +286,7 @@ int sensors_poll_context_t::get_device_version_by_handle(int handle) {
 
 static bool halIsAPILevelCompliant(sensors_poll_context_t *ctx, int handle, int level) {
     int version = ctx->get_device_version_by_handle(handle);
+    ALOGI("%s: version: %d, level: %d", __func__, version, level);
     return version != -1 && (version >= level);
 }
 
@@ -482,13 +506,26 @@ static int device__close(struct hw_device_t *dev) {
 
 static int device__activate(struct sensors_poll_device_t *dev, int handle,
         int enabled) {
+    ALOGI("Called device__activate, handle: %d, enable: %s", handle, enabled ? "true" : "false");
     sensors_poll_context_t* ctx = (sensors_poll_context_t*) dev;
-    return ctx->activate(handle, enabled);
+    int activate_retval = ctx->activate(handle, enabled);
+    if (!halIsAPILevelCompliant(ctx, handle, SENSORS_DEVICE_API_VERSION_1_1)) {
+        int index = handle-1;
+        sensors_enable_state[index] = enabled;
+        if (enabled && !sensors_batch_list[index].empty) {
+            int delay_retval = ctx->setDelay(handle, sensors_batch_list[index].period_ns);
+            sensors_batch_list[index].empty = true;
+            ALOGI("%s: activate return %d, setDelay return %d", __func__, activate_retval, delay_retval);
+            return delay_retval || activate_retval;
+        }
+    }
+    return activate_retval;
 }
 
 static int device__setDelay(struct sensors_poll_device_t *dev, int handle,
         int64_t ns) {
     sensors_poll_context_t* ctx = (sensors_poll_context_t*) dev;
+    ALOGI("Called device__setDelay: handle: %d, ns: %lld", handle, ns);
     return ctx->setDelay(handle, ns);
 }
 
@@ -500,8 +537,25 @@ static int device__poll(struct sensors_poll_device_t *dev, sensors_event_t* data
 
 static int device__batch(struct sensors_poll_device_1 *dev, int handle,
         int flags, int64_t period_ns, int64_t timeout) {
+    ALOGI("Called device__batch: handle %d, flags: %d, period_ns %lld, timeout %lld",
+            handle, flags, period_ns, timeout);
     sensors_poll_context_t* ctx = (sensors_poll_context_t*) dev;
-    return ctx->batch(handle, flags, period_ns, timeout);
+    if (halIsAPILevelCompliant(ctx, handle, SENSORS_DEVICE_API_VERSION_1_1)) {
+        return ctx->batch(handle, flags, period_ns, timeout);
+    }
+    int index = handle-1;
+    if (sensors_enable_state[index] == 0) {
+        if (&sensors_batch_list[index] == NULL) {
+            ALOGW("Saving handle %d batch data failed", handle);
+        } else {
+            sensors_batch_list[index].update_batch_data(handle, flags, period_ns, timeout);
+            ALOGI("Successfully saved batch data for handle %d", handle);
+        }
+        //skip setDelay() if sensors haven't been activated, or SystemUI will freeze and die.
+        return 0;
+    }
+    ALOGW("%s: fall back to v0->setDelay: handle %d, period_ns %lld", __func__, handle, period_ns);
+    return ctx->setDelay(handle, period_ns);
 }
 
 static int device__flush(struct sensors_poll_device_1 *dev, int handle) {
@@ -650,6 +704,17 @@ static void lazy_init_sensors_list() {
         struct sensors_module_t *module = (struct sensors_module_t*) *it;
         global_sensors_count += module->get_sensors_list(module, &subhal_sensors_list);
         ALOGV("increased global_sensors_count to %d", global_sensors_count);
+    }
+
+
+    if (sensors_batch_list != NULL) delete sensors_batch_list;
+    if (sensors_enable_state != NULL) delete sensors_enable_state;
+
+    sensors_batch_list = new sensors_batch_buff[global_sensors_count];
+    sensors_enable_state = new int[global_sensors_count];
+    for (int i = 0; i < global_sensors_count; ++i) {
+        sensors_enable_state[i] = 0;
+        sensors_batch_list[i].empty = true;
     }
 
     // The global_sensors_list is full of consts.
