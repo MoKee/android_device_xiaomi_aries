@@ -188,7 +188,7 @@ static int global_sensors_count = -1;
 /*
  * Extends a sensors_poll_device_1 by including all the sub-module's devices.
  */
-struct sensors_poll_context_t {
+ struct sensors_poll_context_t {
     /*
      * This is the device that SensorDevice.cpp uses to make API calls
      * to the multihal, which fans them out to sub-HALs.
@@ -611,12 +611,17 @@ static void lazy_init_modules() {
  */
 static void fix_sensor_flags(int version, sensor_t& sensor) {
     if (version < SENSORS_DEVICE_API_VERSION_1_3) {
-        if (sensor.type == SENSOR_TYPE_PROXIMITY ||
-                sensor.type == SENSOR_TYPE_TILT_DETECTOR) {
-            int new_flags = SENSOR_FLAG_WAKE_UP | SENSOR_FLAG_ON_CHANGE_MODE;
-            ALOGV("Changing flags of handle=%d from %x to %x",
-                    sensor.handle, sensor.flags, new_flags);
-            sensor.flags = new_flags;
+        switch (sensor.type) {
+        case SENSOR_TYPE_PROXIMITY:
+            sensor.flags |= SENSOR_FLAG_ON_CHANGE_MODE;
+            sensor.flags |= SENSOR_FLAG_WAKE_UP;
+            break;
+        case SENSOR_TYPE_TEMPERATURE:
+            sensor.flags |= SENSOR_FLAG_ON_CHANGE_MODE;
+            break;
+        case SENSOR_TYPE_LIGHT:
+            sensor.flags |= SENSOR_FLAG_ON_CHANGE_MODE;
+            break;
         }
     }
 }
