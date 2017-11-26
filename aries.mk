@@ -21,6 +21,15 @@ PRODUCT_RESTRICT_VENDOR_FILES := false
 
 LOCAL_PATH := device/xiaomi/aries
 
+# Audio
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/audio/audio_policy.conf:system/etc/audio_policy.conf \
+    $(LOCAL_PATH)/rootdir/audio/audio_platform_info.xml:system/etc/audio_platform_info.xml \
+    $(LOCAL_PATH)/rootdir/audio/mixer_paths.xml:system/etc/mixer_paths.xml \
+    $(LOCAL_PATH)/rootdir/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
+    $(LOCAL_PATH)/rootdir/audio/snd_soc_msm_2x_Fusion3:system/etc/snd_soc_msm/snd_soc_msm_2x_Fusion3 \
+    $(LOCAL_PATH)/rootdir/audio/voiceproc_init.img:system/etc/firmware/voiceproc_init.img \
+    $(LOCAL_PATH)/rootdir/audio/voiceproc.img:system/etc/firmware/voiceproc.img
 # Camera
 PRODUCT_PACKAGES += \
     camera.msm8960
@@ -51,12 +60,6 @@ PRODUCT_PACKAGES += \
     init.qcom.syspart_fixup.sh \
     init.target.rc \
     ueventd.aries.rc
-
-# Audio
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/audio/snd_soc_msm_2x_Fusion3:system/etc/snd_soc_msm/snd_soc_msm_2x_Fusion3 \
-    $(LOCAL_PATH)/voiceproc_init.img:system/etc/firmware/voiceproc_init.img \
-    $(LOCAL_PATH)/voiceproc.img:system/etc/firmware/voiceproc.img
 
 # Prebuilt kl and kcm keymaps
 PRODUCT_COPY_FILES += \
