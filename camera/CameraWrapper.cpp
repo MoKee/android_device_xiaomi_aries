@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014, The CyanogenMod Project
+ * Copyright (C) 2015, The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 *
 */
 
-//#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #define LOG_TAG "CameraWrapper"
 #include <cutils/log.h>
@@ -36,13 +36,20 @@
 static android::Mutex gCameraWrapperLock;
 static camera_module_t *gVendorModule = 0;
 
+static char KEY_QC_MORPHO_HDR[] = "morpho-hdr";
+static char KEY_QC_CHROMA_FLASH[] = "chroma-flash";
+static char CHROMA_FLASH_ON[] = "chroma-flash-on";
+static char CHROMA_FLASH_OFF[] = "chroma-flash-off";
+//static char KEY_QC_CAMERA_MODE[] = "camera-mode";
+static char **fixed_set_params = NULL;
+
 static int camera_device_open(const hw_module_t *module, const char *name,
         hw_device_t **device);
 static int camera_get_number_of_cameras(void);
 static int camera_get_camera_info(int camera_id, struct camera_info *info);
 
 static struct hw_module_methods_t camera_module_methods = {
-    .open = camera_device_open,
+    .open = camera_device_open
 };
 
 camera_module_t HAL_MODULE_INFO_SYM = {
@@ -95,6 +102,88 @@ static int check_vendor_module()
     return rv;
 }
 
+static char *camera_fixup_getparams(int id __attribute__((unused)),
+        const char *settings)
+{
+    android::CameraParameters params;
+    params.unflatten(android::String8(settings));
+
+#if !LOG_NDEBUG
+    ALOGV("%s: Original parameters:", __FUNCTION__);
+    params.dump();
+#endif
+
+#if !LOG_NDEBUG
+    ALOGV("%s: Fixed parameters:", __FUNCTION__);
+    params.dump();
+#endif
+
+    android::String8 strParams = params.flatten();
+    char *ret = strdup(strParams.string());
+
+    return ret;
+}
+
+static char *camera_fixup_setparams(int id, const char *settings)
+{
+    bool videoMode = false;
+    bool hdrMode = false;
+
+    android::CameraParameters params;
+    params.unflatten(android::String8(settings));
+
+#if !LOG_NDEBUG
+    ALOGV("%s: original parameters:", __FUNCTION__);
+    params.dump();
+#endif
+
+    params.set(android::CameraParameters::KEY_VIDEO_STABILIZATION, "false");
+
+    /* ZSL
+    if (params.get(android::CameraParameters::KEY_RECORDING_HINT)) {
+        videoMode = !strcmp(params.get(android::CameraParameters::KEY_RECORDING_HINT), "true");
+    }*/
+
+    /* HDR */
+    if (params.get(android::CameraParameters::KEY_SCENE_MODE)) {
+        hdrMode = (!strcmp(params.get(android::CameraParameters::KEY_SCENE_MODE), "hdr"));
+    }
+    if (hdrMode) {
+        params.set(KEY_QC_MORPHO_HDR, "true");
+        params.set(android::CameraParameters::KEY_FLASH_MODE, android::CameraParameters::FLASH_MODE_OFF);
+        params.set("ae-bracket-hdr", "AE-Bracket");
+        params.set("capture-burst-exposures", "-6,8,0");
+
+        // enable ZSL only when HDR is on, otherwise some camera apps will break
+        /*params.set("zsl", "on");
+        params.set(KEY_QC_CAMERA_MODE, "1");*/
+    } else {
+        params.set(KEY_QC_MORPHO_HDR, "false");
+        params.set("ae-bracket-hdr", "Off");
+        params.set("capture-burst-exposures", "0,0,0");
+        //params.set("zsl", "off");
+        //params.set(KEY_QC_CAMERA_MODE, "0");
+    }
+
+    // force ZSL off for videos
+    /*if (videoMode)
+        params.set("zsl", "off");*/
+
+
+#if !LOG_NDEBUG
+    ALOGV("%s: fixed parameters:", __FUNCTION__);
+    params.dump();
+#endif
+
+    android::String8 strParams = params.flatten();
+    if (fixed_set_params[id])
+        free(fixed_set_params[id]);
+    fixed_set_params[id] = strdup(strParams.string());
+    char *ret = fixed_set_params[id];
+
+    return ret;
+}
+
 /*******************************************************************
  * implementation of camera_device_ops functions
  *******************************************************************/
@@ -111,24 +200,6 @@ static int camera_set_preview_window(struct camera_device *device,
     return VENDOR_CALL(device, set_preview_window, window);
 }
 
-#define MAX_CAMERAS 2
-static camera_data_callback data_cb_orig[MAX_CAMERAS] = {0};
-static camera_request_memory get_memory_orig[MAX_CAMERAS] = {0};
-
-static void camera_data_callback_wrapper(int32_t msg_type,
-        const camera_memory_t *data, unsigned int index,
-        camera_frame_metadata_t *metadata, void *user)
-{
-    camera_memory_t *newdata = NULL;
-    if(data==NULL)
-        data = newdata = get_memory_orig[index](-1, 1, 1, NULL);
-
-    data_cb_orig[index](msg_type, data, index, metadata, user);
-
-    if(newdata!=NULL)
-        newdata->release(newdata);
-}
-
 static void camera_set_callbacks(struct camera_device *device,
         camera_notify_callback notify_cb,
         camera_data_callback data_cb,
@@ -141,14 +212,6 @@ static void camera_set_callbacks(struct camera_device *device,
 
     if (!device)
         return;
-
-    if(CAMERA_ID(device)>=MAX_CAMERAS)
-        return;
-
-    data_cb_orig[CAMERA_ID(device)] = data_cb;
-    data_cb = camera_data_callback_wrapper;
-
-    get_memory_orig[CAMERA_ID(device)] = get_memory;
 
     VENDOR_CALL(device, set_callbacks, notify_cb, data_cb, data_cb_timestamp,
             get_memory, user);
@@ -288,6 +351,7 @@ static int camera_auto_focus(struct camera_device *device)
     if (!device)
         return -EINVAL;
 
+
     return VENDOR_CALL(device, auto_focus);
 }
 
@@ -333,7 +397,11 @@ static int camera_set_parameters(struct camera_device *device,
     if (!device)
         return -EINVAL;
 
-    return VENDOR_CALL(device, set_parameters, params);
+    char *tmp = NULL;
+    tmp = camera_fixup_setparams(CAMERA_ID(device), params);
+
+    int ret = VENDOR_CALL(device, set_parameters, tmp);
+    return ret;
 }
 
 static char *camera_get_parameters(struct camera_device *device)
@@ -344,7 +412,13 @@ static char *camera_get_parameters(struct camera_device *device)
     if (!device)
         return NULL;
 
-    return VENDOR_CALL(device, get_parameters);
+    char *params = VENDOR_CALL(device, get_parameters);
+
+    char *tmp = camera_fixup_getparams(CAMERA_ID(device), params);
+    VENDOR_CALL(device, put_parameters, params);
+    params = tmp;
+
+    return params;
 }
 
 static void camera_put_parameters(struct camera_device *device, char *params)
@@ -352,10 +426,8 @@ static void camera_put_parameters(struct camera_device *device, char *params)
     ALOGV("%s->%08X->%08X", __FUNCTION__, (uintptr_t)device,
             (uintptr_t)(((wrapper_camera_device_t*)device)->vendor));
 
-    if (!device)
-        return;
-
-    return VENDOR_CALL(device, put_parameters, params);
+    if (params)
+        free(params);
 }
 
 static int camera_send_command(struct camera_device *device,
@@ -392,6 +464,8 @@ static int camera_dump(struct camera_device *device, int fd)
     return VENDOR_CALL(device, dump, fd);
 }
 
+extern "C" void heaptracker_free_leaked_memory(void);
+
 static int camera_device_close(hw_device_t *device)
 {
     int ret = 0;
@@ -406,6 +480,11 @@ static int camera_device_close(hw_device_t *device)
         goto done;
     }
 
+    for (int i = 0; i < camera_get_number_of_cameras(); i++) {
+        if (fixed_set_params[i])
+            free(fixed_set_params[i]);
+    }
+
     wrapper_dev = (wrapper_camera_device_t*) device;
 
     wrapper_dev->vendor->common.close((hw_device_t*)wrapper_dev->vendor);
@@ -413,7 +492,9 @@ static int camera_device_close(hw_device_t *device)
         free(wrapper_dev->base.ops);
     free(wrapper_dev);
 done:
-
+#ifdef HEAPTRACKER
+    heaptracker_free_leaked_memory();
+#endif
     return ret;
 }
 
@@ -446,6 +527,14 @@ static int camera_device_open(const hw_module_t *module, const char *name,
 
         cameraid = atoi(name);
         num_cameras = gVendorModule->get_number_of_cameras();
+
+        fixed_set_params = (char **) malloc(sizeof(char *) * num_cameras);
+        if (!fixed_set_params) {
+            ALOGE("parameter memory allocation fail");
+            rv = -ENOMEM;
+            goto fail;
+        }
+        memset(fixed_set_params, 0, sizeof(char *) * num_cameras);
 
         if (cameraid > num_cameras) {
             ALOGE("camera service provided cameraid out of bounds, "
