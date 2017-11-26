@@ -53,6 +53,16 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/media/media_codecs.xml:system/etc/media_codecs.xml \
     $(LOCAL_PATH)/rootdir/media/media_codecs_performance.xml:system/etc/media_codecs_performance.xml
 
+# mpdecision configuration
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/thermal/thermald-8064.conf:system/etc/thermald-8064.conf \
+    $(LOCAL_PATH)/rootdir/thermal/thermald-8064ab.conf:system/etc/thermald-8064ab.conf \
+    $(LOCAL_PATH)/rootdir/thermal/thermald-8960.conf:system/etc/thermald-8960.conf \
+    $(LOCAL_PATH)/rootdir/thermal/thermald-8960ab.conf:system/etc/thermald-8960ab.conf \
+    $(LOCAL_PATH)/rootdir/thermal/thermal-engine-8064.conf:system/etc/thermal-engine-8064.conf \
+    $(LOCAL_PATH)/rootdir/thermal/thermal-engine-8064ab.conf:system/etc/thermal-engine-8064ab.conf \
+    $(LOCAL_PATH)/rootdir/thermal/thermal-engine-8960.conf:system/etc/thermal-engine-8960.conf
+
 # Overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
