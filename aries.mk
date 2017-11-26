@@ -21,6 +21,11 @@ PRODUCT_RESTRICT_VENDOR_FILES := false
 
 LOCAL_PATH := device/xiaomi/aries
 
+# Light
+PRODUCT_PACKAGES += \
+    lights.msm8960
+
+
 # Wi-Fi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/wifi/WCNSS_qcom_cfg.ini:system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini \
