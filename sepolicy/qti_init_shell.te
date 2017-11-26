@@ -1,0 +1,17 @@
+allow qti_init_shell storage_file:dir { getattr };
+allow qti_init_shell kernel:process { setsched };
+allow qti_init_shell ctl_default_prop:property_service { set };
+allow qti_init_shell sensors_data_file:file { write getattr setattr };
+allow qti_init_shell mdm_device:chr_file { read };
+allow qti_init_shell tmpfs:dir { write add_name };
+allow qti_init_shell tmpfs:file { create write open };
+allow qti_init_shell toolbox_tmpfs:file { read open };
+allow qti_init_shell init:fifo_file { read write ioctl getattr };
+allow qti_init_shell self:udp_socket { create };
+allow qti_init_shell self:capability { net_raw };
+allow qti_init_shell self:rawip_socket { create getopt setopt };
+allow qti_init_shell init:unix_stream_socket { read write };
+allow qti_init_shell init:netlink_route_socket { read write };
+allow qti_init_shell init:netlink_socket { read write };
+allow qti_init_shell self:netlink_route_socket { create setopt bind getattr write nlmsg_read nlmsg_write };
+

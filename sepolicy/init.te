@@ -1,0 +1,29 @@
+# for syspart_select
+allow init block_device:blk_file { create unlink };
+allow init device:blk_file create;
+
+# userinit
+allow sysinit userinit_exec:file { read getattr open execute execute_no_trans };
+allow init self:process execmem;
+allow init self:socket { ioctl create };
+allow init self:netlink_kobject_uevent_socket { create setopt bind read };
+allow init self:netlink_socket { bind create };
+allow init self:netlink_route_socket { bind create };
+allow init debugfs:dir mounton;
+allow init efs_data_file:dir mounton;
+allow init tee_device:chr_file { ioctl write };
+allow init mdm_device:chr_file { getattr ioctl };
+allow init property_socket:sock_file { write };
+allow init mpctl_data_file:file { append };
+allow init device_latency:chr_file { write };
+allow init video_device:chr_file { write ioctl };
+allow init rtc_device:chr_file { ioctl };
+allow init alarm_device:chr_file { write };
+allow init hsic_device:chr_file { write };
+allow init smd_device:chr_file { append };
+allow init wcnss_device:chr_file { write };
+allow init smem_log_device:chr_file { write ioctl };
+allow init ksbridgehsic_device:chr_file { getattr write ioctl };
+allow init efs_boot_dev:blk_file { write };
+allow init qmuxd_socket:sock_file { write };
+allow init efsbridgehsic_device:chr_file { write getattr };

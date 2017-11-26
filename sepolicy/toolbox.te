@@ -1,0 +1,5 @@
+allow toolbox mdm_device:chr_file { read };
+allow toolbox efs_boot_dev:blk_file { read open getattr };
+allow toolbox self:capability { dac_override };
+allow toolbox tmpfs:dir { write add_name };
+allow toolbox toolbox_tmpfs:file { create open getattr setattr };

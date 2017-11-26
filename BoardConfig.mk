@@ -164,6 +164,9 @@ BOARD_USES_SECURE_SERVICES := true
 
 # SELinux policies
 # qcom sepolicy
+BOARD_SEPOLICY_DIRS += \
+    $(LOCAL_PATH)/sepolicy
+
 include device/qcom/sepolicy/sepolicy.mk
 
 # DEXPREOPT
