@@ -19,6 +19,40 @@
 
 PRODUCT_RESTRICT_VENDOR_FILES := false
 
+LOCAL_PATH := device/xiaomi/aries
+
+# Wi-Fi
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/wifi/WCNSS_qcom_cfg.ini:system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini \
+
+# Audio
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/audio/snd_soc_msm_2x_Fusion3:system/etc/snd_soc_msm/snd_soc_msm_2x_Fusion3 \
+    $(LOCAL_PATH)/voiceproc_init.img:system/etc/firmware/voiceproc_init.img \
+    $(LOCAL_PATH)/voiceproc.img:system/etc/firmware/voiceproc.img
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/ramdisk/init.target.rc:root/init.target.rc \
+    $(LOCAL_PATH)/rootdir/ramdisk/fstab.qcom:root/fstab.qcom
+
+# Prebuilt kl and kcm keymaps
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/keylayout/apq8064-tabla-snd-card_Button_Jack.kl:system/usr/keylayout/apq8064-tabla-snd-card_Button_Jack.kl \
+
+# These are the hardware-specific features
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml
+
+# Audio Configuration
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.audio.vns.mode=2
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.cdma.home.operator.numeric=46003 \
+    ro.telephony.default_cdma_sub=0 \
+    persist.omh.enabled=true
+
+$(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
+
 # Inherit from hardware-specific part of the product configuration
-$(call inherit-product, device/xiaomi/aries/device.mk)
 $(call inherit-product-if-exists, vendor/xiaomi/aries/aries-vendor.mk)
