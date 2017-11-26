@@ -67,6 +67,12 @@ BOARD_HAVE_BLUETOOTH_QCOM                   := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 BLUETOOTH_HCI_USE_MCT                       := true
 
+# Camera
+BOARD_GLOBAL_CFLAGS                         += -DQCOM_BSP
+BOARD_USES_LEGACY_MMAP                      := true
+USE_DEVICE_SPECIFIC_CAMERA                  := true
+USE_DEVICE_SPECIFIC_QCOM_PROPRIETARY        := true
+
 # Display
 BOARD_EGL_CFG                               := $(LOCAL_PATH)/rootdir/etc/egl.cfg
 HAVE_ADRENO_SOURCE                          := false

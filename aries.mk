@@ -21,6 +21,10 @@ PRODUCT_RESTRICT_VENDOR_FILES := false
 
 LOCAL_PATH := device/xiaomi/aries
 
+# Camera
+PRODUCT_PACKAGES += \
+    camera.msm8960
+
 # Light
 PRODUCT_PACKAGES += \
     lights.msm8960
