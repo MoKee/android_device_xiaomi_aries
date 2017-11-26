@@ -25,6 +25,12 @@ LOCAL_PATH := device/xiaomi/aries
 PRODUCT_PACKAGES += \
     camera.msm8960
 
+# Hostapd
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/hostapd/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
+    $(LOCAL_PATH)/rootdir/hostapd/hostapd.accept:system/etc/hostapd/hostapd.accept \
+    $(LOCAL_PATH)/rootdir/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
+
 # Light
 PRODUCT_PACKAGES += \
     lights.msm8960
