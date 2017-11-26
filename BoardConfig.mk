@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# inherit from qcom-common
--include device/xiaomi/msm8960-common/BoardConfigCommon.mk
 
 LOCAL_PATH := device/xiaomi/aries
 
