@@ -73,6 +73,9 @@ BOARD_USES_LEGACY_MMAP                      := true
 USE_DEVICE_SPECIFIC_CAMERA                  := true
 USE_DEVICE_SPECIFIC_QCOM_PROPRIETARY        := true
 
+# CM Hardware
+BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw
+
 # Display
 BOARD_EGL_CFG                               := $(LOCAL_PATH)/rootdir/etc/egl.cfg
 HAVE_ADRENO_SOURCE                          := false
