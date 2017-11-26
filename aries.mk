@@ -29,6 +29,19 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     lights.msm8960
 
+# Ramdisk
+PRODUCT_PACKAGES += \
+    fstab.aries \
+    init.aries.rc  \
+    init.class_main.sh \
+    init.qcom.usb.rc \
+    init.qcom.usb.sh \
+    init.qcom.class_core.sh \
+    init.qcom.early_boot.sh \
+    init.qcom.sh \
+    init.qcom.syspart_fixup.sh \
+    init.target.rc \
+    ueventd.aries.rc
 
 # Wi-Fi
 PRODUCT_COPY_FILES += \
@@ -40,9 +53,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/voiceproc_init.img:system/etc/firmware/voiceproc_init.img \
     $(LOCAL_PATH)/voiceproc.img:system/etc/firmware/voiceproc.img
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/ramdisk/init.target.rc:root/init.target.rc \
-    $(LOCAL_PATH)/rootdir/ramdisk/fstab.qcom:root/fstab.qcom
 
 # Prebuilt kl and kcm keymaps
 PRODUCT_COPY_FILES += \

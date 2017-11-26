@@ -31,17 +31,17 @@ on early-init
     mount debugfs debugfs /sys/kernel/debug
 
 on init
+    export LD_SHIM_LIBS "/system/lib/hw/camera.vendor.msm8960.so|libshim_camera.so"
     # Set permissions for persist partition
     mkdir /persist 0771 system system
 
     export EXTERNAL_STORAGE /sdcard
 
     # Support legacy paths
-    symlink /sdcard /mnt/sdcard
     symlink /sdcard /storage/sdcard0
 
 on fs
-    mount_all ./fstab.qcom
+    mount_all ./fstab.aries
     restorecon_recursive /persist
     mkdir /persist/property
     chmod 0775 /persist/property
@@ -67,6 +67,11 @@ on post-fs-data
    mkdir /tombstones/dsps 0771 system system
    mkdir /tombstones/mdm 0771 system system
    mkdir /tombstones/mdm2 0771 system system
+
+service kernel_logcat /system/bin/sh /kernel_logcat.sh
+    class main
+    user root
+    oneshot
 
 on property:persist.sys.display_prefer=0
     write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 2

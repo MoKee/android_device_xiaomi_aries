@@ -161,7 +161,7 @@ TARGET_FORCE_CPU_UPLOAD := true
 
 # Recovery
 RECOVERY_FSTAB_VERSION           := 2
-TARGET_RECOVERY_FSTAB            := $(LOCAL_PATH)/rootdir/ramdisk/fstab.qcom
+TARGET_RECOVERY_FSTAB            := $(LOCAL_PATH)/rootdir/ramdisk/fstab.aries
 TARGET_RECOVERY_PIXEL_FORMAT     := "RGBX_8888"
 BOARD_HAS_NO_SELECT_BUTTON       := true
 TARGET_USERIMAGES_USE_EXT4       := true
