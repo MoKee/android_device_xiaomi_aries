@@ -94,6 +94,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/keylayout/ue_rf4ce_remote.kl:system/usr/keylayout/ue_rf4ce_remote.kl \
     $(LOCAL_PATH)/rootdir/keylayout/ft5x06.kl:system/usr/keylayout/ft5x06.kl
 
+# Shims
+PRODUCT_PACKAGES += \
+    libshim_camera
+
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml
