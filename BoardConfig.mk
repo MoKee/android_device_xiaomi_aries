@@ -73,6 +73,9 @@ BOARD_USES_LEGACY_MMAP                      := true
 USE_DEVICE_SPECIFIC_CAMERA                  := true
 USE_DEVICE_SPECIFIC_QCOM_PROPRIETARY        := true
 
+# USB
+TARGET_USES_LEGACY_ADB_INTERFACE := true
+
 # Lineage Hardware
 BOARD_HARDWARE_CLASS += \
     $(LOCAL_PATH)/lineagehw
