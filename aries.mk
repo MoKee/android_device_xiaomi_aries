@@ -372,6 +372,7 @@ PRODUCT_PACKAGES += \
     wpa_supplicant.conf \
     dhcpcd.conf \
     wcnss-service \
+    libwcnss_qmi \
     libwifi-hal
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
