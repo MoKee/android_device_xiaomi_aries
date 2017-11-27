@@ -239,6 +239,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # BT
 PRODUCT_PROPERTY_OVERRIDES += \
+    qcom.bluetooth.soc=smd \
+    ro.bluetooth.hfp.ver=1.6 \
     ro.qualcomm.bt.hci_transport=smd \
     ro.bluetooth.request.master=true \
     ro.bluetooth.remote.autoconnect=true \
