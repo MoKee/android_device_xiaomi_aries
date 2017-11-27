@@ -785,8 +785,10 @@ service sysmatsir /system/bin/smonsir
 on property:persist.sysmatsir.enable=1
     start sysmatsir
 
-service charger /sbin/chargeonlymode
+service charger /sbin/healthd -c
     class charger
+    critical
+    seclabel u:r:healthd:s0
 
 # Restart adbd so it can run as root
 on property:service.adb.root=1

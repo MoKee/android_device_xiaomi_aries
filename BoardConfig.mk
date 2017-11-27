@@ -76,6 +76,10 @@ USE_DEVICE_SPECIFIC_QCOM_PROPRIETARY        := true
 # CM Hardware
 BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw
 
+# Charger
+BOARD_CHARGER_ENABLE_SUSPEND := true
+BOARD_CHARGER_DISABLE_INIT_BLANK := true
+
 # Display
 BOARD_EGL_CFG                               := $(LOCAL_PATH)/rootdir/etc/egl.cfg
 HAVE_ADRENO_SOURCE                          := false
