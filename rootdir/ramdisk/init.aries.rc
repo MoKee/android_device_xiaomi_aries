@@ -792,7 +792,7 @@ on property:persist.sysmatsir.enable=1
 service charger /sbin/healthd -c
     class charger
     critical
-    seclabel u:r:healthd:s0
+    seclabel u:r:charger:s0
 
 # Restart adbd so it can run as root
 on property:service.adb.root=1
