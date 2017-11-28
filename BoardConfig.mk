@@ -174,11 +174,11 @@ TARGET_USERIMAGES_USE_EXT4       := true
 BOARD_USES_SECURE_SERVICES := true
 
 # SELinux policies
-# qcom sepolicy
-BOARD_SEPOLICY_DIRS += \
-    $(LOCAL_PATH)/sepolicy
+#BOARD_SEPOLICY_DIRS += \
+#    $(LOCAL_PATH)/sepolicy
 
-include device/qcom/sepolicy/sepolicy.mk
+# qcom sepolicy
+#include device/qcom/sepolicy/sepolicy.mk
 
 # DEXPREOPT
 DONT_DEXPREOPT_PREBUILTS := true
