@@ -409,6 +409,7 @@ PRODUCT_PACKAGES += \
     gestures.msm8960 \
     libxml2 \
     libcnefeatureconfig \
+    wificond \
     tcmiface
 
 # Qualcomm random numbers generated
