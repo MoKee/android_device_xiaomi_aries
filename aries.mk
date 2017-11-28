@@ -34,6 +34,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/audio/voiceproc.img:system/etc/firmware/voiceproc.img
 
 PRODUCT_PACKAGES += \
+    android.hardware.audio@2.0-impl \
+    android.hardware.audio.effect@2.0-impl \
+    android.hardware.broadcastradio@1.0-impl \
+    android.hardware.soundtrigger@2.0-impl \
     audio_policy.msm8960 \
     audio.primary.msm8960 \
     audio_amplifier.msm8960 \
@@ -59,7 +63,9 @@ PRODUCT_COPY_FILES += \
     
 # Camera
 PRODUCT_PACKAGES += \
-    camera.msm8960
+    camera.msm8960 \
+    camera.device@1.0-impl-legacy \
+    android.hardware.camera.provider@2.4-impl-legacy
 
 # This device is xhdpi.  However the platform doesn't
 # currently contain all of the bitmaps at xhdpi density so
@@ -82,9 +88,14 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/hostapd/hostapd.accept:system/etc/hostapd/hostapd.accept \
     $(LOCAL_PATH)/rootdir/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
 
+# Keymaster
+PRODUCT_PACKAGES += \
+    android.hardware.keymaster@3.0-impl
+
 # Light
 PRODUCT_PACKAGES += \
-    lights.msm8960
+    lights.msm8960 \
+    android.hardware.light@2.0-impl
     
 # Media
 PRODUCT_COPY_FILES += \
@@ -246,6 +257,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.bluetooth.remote.autoconnect=true \
     bluetooth.a2dp.sink.enabled=false
 
+# Bluetooth HAL
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-impl
+
 # transmitter isn't supported
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.fm.transmitter=false
@@ -281,6 +296,34 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Gps
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.gps.qmienabled=true
+
+# GNSS HAL
+PRODUCT_PACKAGES += \
+    android.hardware.gnss@1.0-impl
+
+# Power
+PRODUCT_PACKAGES += \
+    android.hardware.power@1.0-impl
+
+# RenderScript HAL
+PRODUCT_PACKAGES += \
+    android.hardware.renderscript@1.0-impl
+
+# Sensor
+PRODUCT_PACKAGES += \
+    android.hardware.sensors@1.0-impl
+
+# Thermal HAL
+PRODUCT_PACKAGES += \
+    android.hardware.thermal@1.0-impl
+
+# USB HAL
+PRODUCT_PACKAGES += \
+    android.hardware.usb@1.0-service
+
+# Vibrator
+PRODUCT_PACKAGES += \
+    android.hardware.vibrator@1.0-impl
 
 PRODUCT_PACKAGES += \
     librs_jni \
@@ -318,6 +361,12 @@ PRODUCT_PACKAGES += \
     gralloc.msm8960 \
     copybit.msm8960 \
     memtrack.msm8960
+    android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.allocator@2.0-service \
+    android.hardware.graphics.composer@2.1-impl \
+    android.hardware.graphics.mapper@2.0-impl \
+    android.hardware.memtrack@1.0-impl \
+    android.hardware.memtrack@1.0-service
 
 PRODUCT_PACKAGES += \
     libstlport
@@ -340,12 +389,14 @@ PRODUCT_PACKAGES += \
     libstagefrighthw \
     qcmediaplayer \
     libqcmediaplayer \
-    libextmedia_jni
+    libextmedia_jni \
+    android.hardware.drm@1.0-impl
 
 # fmradio support
 PRODUCT_PACKAGES += \
     libfmjni \
-    FMRadio
+    FMRadio \
+    android.hardware.broadcastradio@1.0-impl
 
 # CodeAurora
 PRODUCT_PACKAGES += \
@@ -364,6 +415,7 @@ PRODUCT_PACKAGES += \
     qrngd
 
 PRODUCT_PACKAGES += \
+    android.hardware.wifi@1.0-service \
     libwpa_client \
     hostapd \
     wpa_supplicant \
