@@ -73,8 +73,8 @@ BOARD_USES_LEGACY_MMAP                      := true
 USE_DEVICE_SPECIFIC_CAMERA                  := true
 USE_DEVICE_SPECIFIC_QCOM_PROPRIETARY        := true
 
-# CM Hardware
-BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw
+# MK Hardware
+BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/mkhw
 
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
