@@ -512,6 +512,9 @@ on property:bluetooth.dun.status=running
 on property:bluetooth.dun.status=stopped
     stop bt-dun
 
+on property:dev.bootcomplete=1
+    setprop sys.io.scheduler "bfq"
+
 service qcom-c_core-sh /system/bin/sh /init.qcom.class_core.sh
     class core
     user root
