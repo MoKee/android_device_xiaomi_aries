@@ -45,6 +45,7 @@ TARGET_KRAIT_BIONIC_BBTHRESH         := 64
 TARGET_KRAIT_BIONIC_PLDSIZE          := 64
 
 # Audio
+USE_XML_AUDIO_POLICY_CONF               := 1
 BOARD_USES_ALSA_AUDIO                   := true
 TARGET_USES_QCOM_MM_AUDIO               := true
 TARGET_USES_QCOM_COMPRESSED_AUDIO       := true
