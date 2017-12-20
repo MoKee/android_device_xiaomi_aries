@@ -376,10 +376,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     camera2.portability.force_api=1
 
-# Snap
-PRODUCT_PACKAGES += \
-    Snap
-
 $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
 
 # Inherit from hardware-specific part of the product configuration
