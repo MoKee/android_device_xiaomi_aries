@@ -67,6 +67,10 @@ PRODUCT_PACKAGES += \
     camera.device@1.0-impl-legacy \
     android.hardware.camera.provider@2.4-impl-legacy
 
+# Charger
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/ramdisk/chargeonlymode:root/sbin/chargeonlymode
+
 # This device is xhdpi.  However the platform doesn't
 # currently contain all of the bitmaps at xhdpi density so
 # we do this little trick to fall back to the hdpi version
