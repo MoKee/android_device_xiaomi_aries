@@ -61,6 +61,9 @@ BOARD_HAVE_AUDIENCE_ES310               := true
 # Blobs
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 
+# Binder API version
+TARGET_USES_64_BIT_BINDER := true
+
 # Bluetooth
 BOARD_HAVE_BLUETOOTH                        := true
 BOARD_HAVE_BLUETOOTH_QCOM                   := true
