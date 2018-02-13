@@ -3,3 +3,6 @@ rild.libargs=-d /dev/smd0
 persist.media.treble_omx=false
 debug.hwui.use_buffer_age=false
 camera.disable_treble=true
+
+# Maintainer
+ro.mk.maintainer=guaiyihu

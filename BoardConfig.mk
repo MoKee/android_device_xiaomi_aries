@@ -82,9 +82,9 @@ TARGET_USES_LEGACY_ADB_INTERFACE := true
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(LOCAL_PATH)/config.fs
 
-# Lineage Hardware
-BOARD_HARDWARE_CLASS += \
-    $(LOCAL_PATH)/lineagehw
+# MK Hardware
+BOARD_HARDWARE_CLASS := \
+    $(LOCAL_PATH)/mkhw
 
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
@@ -153,6 +153,9 @@ TARGET_USES_QCOM_BSP := true
 
 # QCOM enhanced A/V
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
+
+# Earlysuspend Hack
+TARGET_USES_EARLY_SUSPEND := true
 
 # Radio
 TARGET_RIL_VARIANT := caf
