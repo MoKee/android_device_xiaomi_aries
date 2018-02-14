@@ -130,7 +130,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/thermal/thermal-engine-8960.conf:system/etc/thermal-engine-8960.conf
 
 # Overlay
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+DEVICE_PACKAGE_OVERLAYS += \
+    $(LOCAL_PATH)/overlay \
+    $(LOCAL_PATH)/overlay-mokee
 
 # Ramdisk
 PRODUCT_PACKAGES += \
