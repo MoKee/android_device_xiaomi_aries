@@ -18,7 +18,7 @@ LOCAL_PATH := device/xiaomi/aries
 
 # Bootloader
 TARGET_NO_RADIOIMAGE              := true
-TARGET_NO_BOOTLOADER.             := true
+TARGET_NO_BOOTLOADER              := true
 TARGET_BOOTLOADER_NAME            := aries
 TARGET_BOARD_INFO_FILE            := $(LOCAL_PATH)/board-info.txt
 QCOM_BOARD_PLATFORMS              := msm8960
