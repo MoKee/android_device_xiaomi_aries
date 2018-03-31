@@ -183,6 +183,9 @@ BOARD_HAS_NO_SELECT_BUTTON       := true
 TARGET_USERIMAGES_USE_EXT4       := true
 TARGET_USERIMAGES_USE_F2FS       := true
 
+# Remove secdiscard command
+TARGET_REMOVE_SECDISCARD_COMMAND := true
+
 # Security
 BOARD_USES_SECURE_SERVICES := true
 
