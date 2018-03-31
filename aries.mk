@@ -194,6 +194,13 @@ PRODUCT_COPY_FILES += \
 
 # Audio Configuration
 PRODUCT_PROPERTY_OVERRIDES += \
+    audio.offload.disable=1 \
+    mm.enable.smoothstreaming=true \
+    persist.audio.fluence.voicecall=true \
+    persist.audio.fluence.voicerec=false \
+    persist.audio.fluence.speaker=true \
+    qcom.hw.aac.encoder=true \
+    ro.qc.sdk.audio.fluencetype=none \
     persist.audio.vns.mode=2
 
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -234,20 +241,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     com.qc.hardware=true \
     ro.qc.sdk.sensors.gestures=false \
     ro.qc.sensors.wl_dis=true
-
-# Audio Configuration
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.qc.sdk.audio.ssr=false \
-    persist.audio.fluence.mode=endfire \
-    persist.audio.vr.enable=false \
-    persist.audio.handset.mic=digital \
-    persist.audio.lowlatency.rec=false \
-    ro.qc.sdk.audio.fluencetype=none \
-    af.resampler.quality=255 \
-    lpa.use-stagefright=true \
-    qcom.hw.aac.encoder=true \
-    mm.enable.qcom_parser=33395 \
-    media.aac_51_output_enabled=true
 
 # BT
 PRODUCT_PROPERTY_OVERRIDES += \
