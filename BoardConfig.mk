@@ -14,13 +14,13 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/xiaomi/aries
+DEVICE_PATH := device/xiaomi/aries
 
 # Bootloader
 TARGET_NO_RADIOIMAGE              := true
 TARGET_NO_BOOTLOADER              := true
 TARGET_BOOTLOADER_NAME            := aries
-TARGET_BOARD_INFO_FILE            := $(LOCAL_PATH)/board-info.txt
+TARGET_BOARD_INFO_FILE            := $(DEVICE_PATH)/board-info.txt
 QCOM_BOARD_PLATFORMS              := msm8960
 TARGET_BOARD_PLATFORM             := msm8960
 TARGET_BOOTLOADER_BOARD_NAME      := MSM8960
@@ -67,7 +67,7 @@ TARGET_USES_64_BIT_BINDER := true
 # Bluetooth
 BOARD_HAVE_BLUETOOTH                        := true
 BOARD_HAVE_BLUETOOTH_QCOM                   := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
 BLUETOOTH_HCI_USE_MCT                       := true
 
 # Camera
@@ -77,18 +77,18 @@ USE_DEVICE_SPECIFIC_CAMERA                  := true
 USE_DEVICE_SPECIFIC_QCOM_PROPRIETARY        := true
 
 # Filesystem
-TARGET_FS_CONFIG_GEN := $(LOCAL_PATH)/config.fs
+TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
 
 # MK Hardware
-BOARD_HARDWARE_CLASS := \
-    $(LOCAL_PATH)/mkhw
+BOARD_HARDWARE_CLASS += \
+    $(DEVICE_PATH)/mkhw
 
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
 
 # Display
-BOARD_EGL_CFG                               := $(LOCAL_PATH)/rootdir/etc/egl.cfg
+BOARD_EGL_CFG                               := $(DEVICE_PATH)/rootdir/etc/egl.cfg
 HAVE_ADRENO_SOURCE                          := false
 NUM_FRAMEBUFFER_SURFACE_BUFFERS             := 3
 OVERRIDE_RS_DRIVER                          := libRSDriver_adreno.so
@@ -108,11 +108,11 @@ BOARD_HAVE_QCOM_FM := true
 EXTENDED_FONT_FOOTPRINT := true
 
 # HIDL
-DEVICE_MANIFEST_FILE := $(LOCAL_PATH)/manifest.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_msm8960
-TARGET_LIBINIT_DEFINES_FILE := $(LOCAL_PATH)/init/init_msm8960.cpp
+TARGET_LIBINIT_DEFINES_FILE := $(DEVICE_PATH)/init/init_msm8960.cpp
 
 # Kernel
 BOARD_KERNEL_BASE    := 0x80200000
@@ -143,7 +143,7 @@ MALLOC_SVELTE := true
 
 # OTA assert
 TARGET_OTA_ASSERT_DEVICE := aries
-TARGET_RELEASETOOLS_EXTENSIONS := $(LOCAL_PATH)
+TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)
 
 # Qualcomm support
 TARGET_USES_QCOM_BSP := true
@@ -177,7 +177,7 @@ TARGET_FORCE_CPU_UPLOAD := true
 
 # Recovery
 RECOVERY_FSTAB_VERSION           := 2
-TARGET_RECOVERY_FSTAB            := $(LOCAL_PATH)/rootdir/ramdisk/fstab.aries
+TARGET_RECOVERY_FSTAB            := $(DEVICE_PATH)/rootdir/ramdisk/fstab.aries
 TARGET_RECOVERY_PIXEL_FORMAT     := "RGBX_8888"
 BOARD_HAS_NO_SELECT_BUTTON       := true
 TARGET_USERIMAGES_USE_EXT4       := true
@@ -191,7 +191,7 @@ BOARD_USES_SECURE_SERVICES := true
 
 # SELinux policies
 #BOARD_SEPOLICY_DIRS += \
-#    $(LOCAL_PATH)/sepolicy
+#    $(DEVICE_PATH)/sepolicy
 
 # qcom sepolicy
 #include device/qcom/sepolicy/sepolicy.mk
