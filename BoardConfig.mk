@@ -77,6 +77,9 @@ BOARD_USES_LEGACY_MMAP                      := true
 USE_DEVICE_SPECIFIC_CAMERA                  := true
 USE_DEVICE_SPECIFIC_QCOM_PROPRIETARY        := true
 
+# Extended filesystem support
+TARGET_EXFAT_DRIVER := exfat
+
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
 
