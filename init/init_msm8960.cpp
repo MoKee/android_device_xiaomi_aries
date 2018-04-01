@@ -98,21 +98,21 @@ void vendor_load_properties()
 
     /* MI 2 */
     if (raw_id==1816) {
-        property_override("ro.product.model", "MI 2");
+        property_override_dual("ro.product.model", "ro.vendor.product.model", "MI 2");
     }
 
     /* MI 2S */
     else if(raw_id==1812) {
-        property_override("ro.product.model", "MI 2S");
+        property_override_dual("ro.product.model", "ro.vendor.product.model", "MI 2S");
     }
 
     /* Unknown */
     else {
-        property_override("ro.product.model", "MI 2C");
+        property_override_dual("ro.product.model", "ro.vendor.product.model", "MI 2C");
     }
 
     property_override("ro.build.product", "aries");
-    property_override("ro.product.device", "aries");
+    property_override_dual("ro.product.device", "ro.vendor.product.device", "aries");
     property_override("ro.build.description", "aries-userdebug 6.0.1 MMB29M release-keys");
-    property_override("ro.build.fingerprint", "Xiaomi/aries/aries:6.0.1/MMB29M/userdebug/release-keys");
+    property_override_dual("ro.build.fingerprint", "ro.vendor.build.fingerprint", "Xiaomi/aries/aries:6.0.1/MMB29M/userdebug/release-keys");
 }
