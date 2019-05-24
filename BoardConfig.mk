@@ -24,6 +24,9 @@ TARGET_OTA_ASSERT_DEVICE := aries
 # Bootloader
 TARGET_BOOTLOADER_NAME       := aries
 
+# HIDL
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
+
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_msm8960
 TARGET_LIBINIT_DEFINES_FILE := $(DEVICE_PATH)/init/init_msm8960.cpp

@@ -1,0 +1,9 @@
+on init
+    chown root system /proc/touchscreen/disable_keys
+    chmod 0664 /proc/touchscreen/disable_keys
+    restorecon /proc/touchscreen/disable_keys
+
+service vendor.touch-hal-1-0-aries /vendor/bin/hw/vendor.mokee.touch@1.0-service.aries
+    class hal
+    user system
+    group system

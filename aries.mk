@@ -9,3 +9,7 @@ $(call inherit-product, vendor/xiaomi/aries/aries-vendor.mk)
 # Audio
 PRODUCT_PACKAGES += \
     audio_amplifier.msm8960
+
+# Touch
+PRODUCT_PACKAGES += \
+    vendor.mokee.touch@1.0-service.aries
