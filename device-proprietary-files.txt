@@ -1,0 +1,37 @@
+# Audio
+lib/libaudcal.so:vendor/lib/libaudcal.so
+lib/libcsd-client.so:vendor/lib/libcsd-client.so
+
+# Audio Firmware
+etc/firmware/voiceproc_init.img:vendor/firmware/voiceproc_init.img
+etc/firmware/voiceproc.img:vendor/firmware/voiceproc.img
+
+# Camera chromatix
+lib/libchromatix_imx175_zsl.so:vendor/lib/libchromatix_imx175_zsl.so
+lib/libchromatix_imx175_hfr_120fps.so:vendor/lib/libchromatix_imx175_hfr_120fps.so
+lib/libchromatix_imx175_hfr_60fps.so:vendor/lib/libchromatix_imx175_hfr_60fps.so
+lib/libchromatix_imx175_hfr_90fps.so:vendor/lib/libchromatix_imx175_hfr_90fps.so
+lib/libchromatix_imx175_default_video.so:vendor/lib/libchromatix_imx175_default_video.so
+lib/libchromatix_imx175_preview.so:vendor/lib/libchromatix_imx175_preview.so
+lib/libchromatix_s5k3h7_preview.so:vendor/lib/libchromatix_s5k3h7_preview.so
+lib/libchromatix_s5k3h7_default_video.so:vendor/lib/libchromatix_s5k3h7_default_video.so
+lib/libchromatix_s5k3h7_hfr_120fps.so:vendor/lib/libchromatix_s5k3h7_hfr_120fps.so
+lib/libchromatix_s5k3h7_hfr_60fps.so:vendor/lib/libchromatix_s5k3h7_hfr_60fps.so
+lib/libchromatix_s5k3h7_hfr_90fps.so:vendor/lib/libchromatix_s5k3h7_hfr_90fps.so
+lib/libchromatix_s5k3h7_zsl.so:vendor/lib/libchromatix_s5k3h7_zsl.so
+lib/libchromatix_imx135_default_video.so:vendor/lib/libchromatix_imx135_default_video.so
+lib/libchromatix_imx135_hfr_60fps.so:vendor/lib/libchromatix_imx135_hfr_60fps.so
+lib/libchromatix_imx135_hfr_90fps.so:vendor/lib/libchromatix_imx135_hfr_90fps.so
+lib/libchromatix_imx135_preview.so:vendor/lib/libchromatix_imx135_preview.so
+lib/libchromatix_imx135_video_hdr.so:vendor/lib/libchromatix_imx135_video_hdr.so
+lib/libchromatix_imx135_zsl.so:vendor/lib/libchromatix_imx135_zsl.so
+lib/libchromatix_ov2722_zsl.so:vendor/lib/libchromatix_ov2722_zsl.so
+lib/libchromatix_ov2722_default_video.so:vendor/lib/libchromatix_ov2722_default_video.so
+lib/libchromatix_ov2722_preview.so:vendor/lib/libchromatix_ov2722_preview.so
+lib/libchromatix_ov2720_hfr.so:vendor/lib/libchromatix_ov2720_hfr.so
+lib/libchromatix_ov2720_zsl.so:vendor/lib/libchromatix_ov2720_zsl.so
+lib/libchromatix_ov2720_preview.so:vendor/lib/libchromatix_ov2720_preview.so
+lib/libchromatix_ov2720_default_video.so:vendor/lib/libchromatix_ov2720_default_video.so
+lib/libchromatix_imx132_default_video.so:vendor/lib/libchromatix_imx132_default_video.so
+lib/libchromatix_imx132_preview.so:vendor/lib/libchromatix_imx132_preview.so
+lib/libchromatix_imx132_zsl.so:vendor/lib/libchromatix_imx132_zsl.so
