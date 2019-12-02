@@ -110,6 +110,7 @@ void vendor_load_properties()
     }
 
     property_override_dual("ro.product.device", "ro.vendor.product.device", "aries");
-    property_override("ro.build.description", "aries-userdebug 6.0.1 MMB29M release-keys");
-    property_override_dual("ro.build.fingerprint", "ro.vendor.build.fingerprint", "Xiaomi/aries/aries:6.0.1/MMB29M/userdebug/release-keys");
+    property_override_dual("ro.product.name", "ro.vendor.product.name", "aries");
+    property_override("ro.build.description", "aries-userdebug 6.0.1 MMB29M 6.3.22 test-keys");
+    property_override_dual("ro.build.fingerprint", "ro.vendor.build.fingerprint", "Xiaomi/aries/aries:6.0.1/MMB29M/6.3.22:userdebug/test-keys");
 }
